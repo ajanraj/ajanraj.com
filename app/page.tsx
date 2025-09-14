@@ -1,3 +1,4 @@
+import { endOfWeek, startOfDay, subDays } from "date-fns";
 import { ChevronRight } from "lucide-react";
 import { unstable_cache } from "next/cache";
 import Image from "next/image";
@@ -21,12 +22,26 @@ const getCachedContributions = unstable_cache(
 			contributions: Activity[];
 		};
 		const total = data.total[new Date().getFullYear()];
-		const TOTAL_SQUARES = 417;
 
-		const sortedData = data.contributions.sort(
-			(a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+		// Calculate exactly 309 data points (44 weeks + 1 day)
+		const today = startOfDay(new Date());
+		// End date: End of current week (Saturday)
+		const endDate = endOfWeek(today, { weekStartsOn: 0 }); // Sunday as week start
+		// Start date: 308 days before end date (309 days total)
+		const startDate = subDays(endDate, 308);
+
+		// Filter contributions to this exact range
+		const recentContributions = data.contributions.filter((contribution) => {
+			const contributionDate = new Date(contribution.date);
+			return contributionDate >= startDate && contributionDate <= endDate;
+		});
+
+		// Sort by date (oldest to newest for proper display)
+		const sortedData = recentContributions.sort(
+			(a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
 		);
-		return { contributions: sortedData.slice(0, TOTAL_SQUARES), total };
+
+		return { contributions: sortedData, total };
 	},
 	["github-contributions"],
 	{ revalidate: 60 * 60 * 24 }

@@ -208,7 +208,7 @@ const getMonthLabels = (
 			return labels;
 		}, [])
 		.filter(({ weekIndex }, index, labels) => {
-			const minWeeks = 3;
+			const minWeeks = 2;
 
 			if (index === 0) {
 				return labels[1] && labels[1].weekIndex - weekIndex >= minWeeks;
@@ -378,11 +378,15 @@ export const ContributionGraphCalendar = ({
 
 	return (
 		<div
-			className={cn("max-w-full overflow-x-auto overflow-y-hidden", className)}
+			className={cn(
+				"max-w-full overflow-x-auto overflow-y-hidden",
+				"[direction:rtl]", // Always RTL to start scrolled to the right when scrollbar appears
+				className
+			)}
 			{...props}
 		>
 			<svg
-				className="block overflow-visible"
+				className="block overflow-visible [direction:ltr]" // Always LTR for content
 				height={height}
 				viewBox={`0 0 ${width} ${height}`}
 				width={width}

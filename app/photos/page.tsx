@@ -147,7 +147,8 @@ export default function PhotosPage() {
 				</p>
 			</div>
 			<p className="mb-8 text-sm opacity-80">
-				My photos are taken with an iPhone 12 Pro Max (Wide: 26mm f/1.6, Ultra Wide: 13mm f/2.4, Telephoto: 65mm f/2.2).
+				My photos are taken with an iPhone 12 Pro Max (Wide: 26mm f/1.6, Ultra
+				Wide: 13mm f/2.4, Telephoto: 65mm f/2.2).
 			</p>
 
 			{/* Photo Grid */}
