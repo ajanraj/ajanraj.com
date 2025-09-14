@@ -35,9 +35,9 @@ export default function RootLayout({
 			suppressHydrationWarning
 		>
 			<Script
-				data-website-id="5457805a-0169-41e3-b6ce-6ca2025c6dac"
+				data-website-id="44b7a203-2f5e-4e57-abba-1988d082ddfd"
 				defer
-				src="https://cloud.umami.is/script.js"
+				src="https://umami.ajanraj.com/script.js"
 			/>
 			<body className="antialiased">
 				<ThemeProvider
