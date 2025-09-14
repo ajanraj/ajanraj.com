@@ -147,9 +147,7 @@ export default function PhotosPage() {
 				</p>
 			</div>
 			<p className="mb-8 text-sm opacity-80">
-				My photos are taken with a Panasonic Lumix G85 with a Panasonic Lumix G
-				25mm F1.7. lens but I've also recently upgraded to a Panasonic Lumix G
-				Vario 12-60mm f/3.5-5.6.
+				My photos are taken with an iPhone 12 Pro Max (Wide: 26mm f/1.6, Ultra Wide: 13mm f/2.4, Telephoto: 65mm f/2.2).
 			</p>
 
 			{/* Photo Grid */}
