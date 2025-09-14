@@ -96,11 +96,13 @@ export default async function ProjectPage({
 						</section>
 					)}
 
-					{project.challenges && (
+					{"challenges" in project && (
 						<section>
 							<h2 className="mb-3 text-2xl">Challenges & Solutions</h2>
 							<div>
-								<p>{project.challenges}</p>
+								<p>
+									{(project as Record<string, unknown>).challenges as string}
+								</p>
 							</div>
 						</section>
 					)}
@@ -121,16 +123,19 @@ export default async function ProjectPage({
 						)}
 					</section>
 
-					{project.awards && project.awards.length > 0 && (
-						<section className="rounded-md border p-4 shadow-sm">
-							<h3 className="mb-3 text-lg">Awards</h3>
-							<ul className="space-y-2 text-sm">
-								{project.awards.map((award: string) => (
-									<li key={award}>{award}</li>
-								))}
-							</ul>
-						</section>
-					)}
+					{"awards" in project &&
+						Array.isArray((project as Record<string, unknown>).awards) && (
+							<section className="rounded-md border p-4 shadow-sm">
+								<h3 className="mb-3 text-lg">Awards</h3>
+								<ul className="space-y-2 text-sm">
+									{(
+										(project as Record<string, unknown>).awards as string[]
+									).map((award: string) => (
+										<li key={award}>{award}</li>
+									))}
+								</ul>
+							</section>
+						)}
 
 					<section className="rounded-md border p-4 shadow-sm">
 						<h3 className="mb-3 text-lg">Tech Stack</h3>

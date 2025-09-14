@@ -164,7 +164,7 @@ export default function PhotosPage() {
 							</div>
 						))
 					: photos.map((photo, i) => {
-							const status = imageStatuses.get(i) || "idle";
+							const status = imageStatuses.get(`${i}`) || "idle";
 
 							return (
 								<motion.div
@@ -200,11 +200,13 @@ export default function PhotosPage() {
 										className="h-full w-full object-cover"
 										height={400}
 										onError={() => {
-											setImageStatuses((prev) => new Map(prev).set(i, "error"));
+											setImageStatuses((prev) =>
+												new Map(prev).set(`${i}`, "error")
+											);
 										}}
 										onLoad={() => {
 											setImageStatuses((prev) =>
-												new Map(prev).set(i, "loaded")
+												new Map(prev).set(`${i}`, "loaded")
 											);
 										}}
 										src={photo.thumbnail}

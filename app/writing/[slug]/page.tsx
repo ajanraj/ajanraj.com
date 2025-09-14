@@ -86,7 +86,7 @@ function extractHeadings(content: string) {
 		// Importantly, do NOT trim trailing hyphens as they're preserved in the browser IDs
 		//.replace(/(^-|-$)/g, '');
 
-		headings.push({ text, level, slug });
+		headings.push({ id: slug, text, level });
 	}
 
 	return headings;

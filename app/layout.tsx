@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Lora, Geist_Mono } from "next/font/google";
+import { Geist_Mono, Lora } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
 import Footer from "@/components/footer";

@@ -68,11 +68,11 @@ export default async function Home() {
 				<h2 className="text-lg">About Me</h2>
 				<div className="mt-2.5 space-y-3.5 opacity-80">
 					<p>
-						I&apos;m passionate about creating things that teach me something new
-						or solve problems that matter. Coding feels like a kind of magic to
-						me, the way an idea can turn into something real that others can use
-						or enjoy. I grow the most when I&apos;m building, experimenting, and
-						learning along the way, so I try to live with a project-first
+						I&apos;m passionate about creating things that teach me something
+						new or solve problems that matter. Coding feels like a kind of magic
+						to me, the way an idea can turn into something real that others can
+						use or enjoy. I grow the most when I&apos;m building, experimenting,
+						and learning along the way, so I try to live with a project-first
 						mindset.
 					</p>
 					<p>
@@ -82,22 +82,22 @@ export default async function Home() {
 						the direction you really want to go.
 					</p>
 					<p>
-						When I&apos;m not working on something new or lost in thought, I love
-						traveling to new places with no strict plans, just following the road
-						and seeing what happens. Travel helps me reset, and{" "}
+						When I&apos;m not working on something new or lost in thought, I
+						love traveling to new places with no strict plans, just following
+						the road and seeing what happens. Travel helps me reset, and{" "}
 						<Link
 							className="underline underline-offset-4 hover:opacity-100"
 							href="/photos"
 						>
 							photography
 						</Link>{" "}
-						has become my way of holding onto those moments and sharing what they
-						felt like with others.
+						has become my way of holding onto those moments and sharing what
+						they felt like with others.
 					</p>
 					<p>
 						At the end of the day, I know I get to do all this because of the
-						love and sacrifices of my parents, and I carry that gratitude with me
-						in everything I do.
+						love and sacrifices of my parents, and I carry that gratitude with
+						me in everything I do.
 					</p>
 				</div>
 			</div>
