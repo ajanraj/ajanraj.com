@@ -200,7 +200,9 @@ function PhotosPage() {
 									)}
 									<img
 										alt={`Gallery item ${i + 1}`}
-										className="h-full w-full object-cover"
+										className="h-full w-full object-cover pointer-events-none select-none"
+										draggable={false}
+										onContextMenu={(e) => e.preventDefault()}
 										height={400}
 										onError={() => {
 											setImageStatuses((prev) =>
@@ -319,7 +321,9 @@ function PhotosPage() {
 														status === 'loaded' ? 'blur(0px)' : 'blur(15px)',
 													opacity: status === 'loaded' ? 1 : 0,
 												}}
-												className="pointer-events-auto h-auto max-h-[80vh] w-auto max-w-[90vw] rounded-lg object-contain"
+												className="pointer-events-none h-auto max-h-[80vh] w-auto max-w-[90vw] rounded-lg object-contain select-none"
+												draggable={false}
+												onContextMenu={(e) => e.preventDefault()}
 												height={1080}
 												initial={{ filter: 'blur(15px)', opacity: 0 }}
 												onError={() => {
