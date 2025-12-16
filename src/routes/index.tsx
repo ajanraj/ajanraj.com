@@ -46,6 +46,8 @@ const getContributions = createServerFn().handler(async () => {
 
 export const Route = createFileRoute('/')({
 	loader: () => getContributions(),
+	// Cache contributions data for 5 minutes to prevent re-fetching on every navigation
+	staleTime: 1000 * 60 * 5,
 	component: HomePage,
 })
 
