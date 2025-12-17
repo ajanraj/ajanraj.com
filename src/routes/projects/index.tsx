@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import ProjectCard from "@/components/project-card";
 import RESUME from "@/data/resume";
 
@@ -36,12 +36,14 @@ function ProjectsPage() {
         <h2 className="mb-4 font-medium text-2xl tracking-tight">More Projects</h2>
         <p className="mb-6 opacity-80">
           Additional smaller projects and experiments can be found on my{" "}
-          <Link
+          <a
             className="text-muted-foreground underline underline-offset-4 transition hover:text-foreground"
-            to="https://github.com/ajanraj"
+            href="https://github.com/ajanraj"
+            rel="noopener noreferrer"
+            target="_blank"
           >
             GitHub profile
-          </Link>
+          </a>
           .
         </p>
       </div>

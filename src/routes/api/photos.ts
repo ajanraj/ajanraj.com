@@ -78,7 +78,7 @@ export const Route = createFileRoute("/api/photos")({
               }));
 
             return Response.json({ photos });
-          } catch (_error) {
+          } catch {
             return Response.json({ error: "Failed to fetch photos" }, { status: 500 });
           }
         }
@@ -100,7 +100,7 @@ export const Route = createFileRoute("/api/photos")({
             }));
 
           return Response.json({ photos });
-        } catch (_error) {
+        } catch {
           return Response.json({ error: "Failed to fetch photos from R2" }, { status: 500 });
         }
       },

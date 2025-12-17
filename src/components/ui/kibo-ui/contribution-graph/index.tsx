@@ -147,7 +147,7 @@ const groupByWeeks = (activities: Activity[], weekStart: WeekDay = 0): Week[] =>
     getDay(firstDate) === weekStart ? firstDate : subWeeks(nextDay(firstDate, weekStart), 1);
 
   const paddedActivities = [
-    ...(new Array(differenceInCalendarDays(firstDate, firstCalendarDate)).fill(
+    ...(Array.from({ length: differenceInCalendarDays(firstDate, firstCalendarDate) }).fill(
       undefined,
     ) as Activity[]),
     ...normalizedActivities,
@@ -155,7 +155,7 @@ const groupByWeeks = (activities: Activity[], weekStart: WeekDay = 0): Week[] =>
 
   const numberOfWeeks = Math.ceil(paddedActivities.length / 7);
 
-  return new Array(numberOfWeeks)
+  return Array.from({ length: numberOfWeeks })
     .fill(undefined)
     .map((_, weekIndex) => paddedActivities.slice(weekIndex * 7, weekIndex * 7 + 7));
 };
@@ -169,7 +169,9 @@ const getMonthLabels = (
       const firstActivity = week.find((activity) => activity !== undefined);
 
       if (!firstActivity) {
-        throw new Error(`Unexpected error: Week ${weekIndex + 1} is empty: [${week}].`);
+        throw new Error(
+          `Unexpected error: Week ${weekIndex + 1} is empty: [${week.map((a) => a?.date || "empty").join(", ")}].`,
+        );
       }
 
       const month = monthNames[getMonth(parseISO(firstActivity.date))];
@@ -436,30 +438,32 @@ export const ContributionGraphLegend = ({
   return (
     <div className={cn("ml-auto flex items-center gap-[3px]", className)} {...props}>
       <span className="mr-1 text-muted-foreground">{labels.legend?.less || "Less"}</span>
-      {new Array(maxLevel + 1).fill(undefined).map((_, level) =>
-        children ? (
-          <Fragment key={level}>{children({ level })}</Fragment>
-        ) : (
-          <svg height={blockSize} key={level} width={blockSize}>
-            <title>{`${level} contributions`}</title>
-            <rect
-              className={cn(
-                "stroke-[1px] stroke-border",
-                'data-[level="0"]:fill-muted',
-                'data-[level="1"]:fill-muted-foreground/20',
-                'data-[level="2"]:fill-muted-foreground/40',
-                'data-[level="3"]:fill-muted-foreground/60',
-                'data-[level="4"]:fill-muted-foreground/80',
-              )}
-              data-level={level}
-              height={blockSize}
-              rx={blockRadius}
-              ry={blockRadius}
-              width={blockSize}
-            />
-          </svg>
-        ),
-      )}
+      {Array.from({ length: maxLevel + 1 })
+        .fill(undefined)
+        .map((_, level) =>
+          children ? (
+            <Fragment key={level}>{children({ level })}</Fragment>
+          ) : (
+            <svg height={blockSize} key={level} width={blockSize}>
+              <title>{`${level} contributions`}</title>
+              <rect
+                className={cn(
+                  "stroke-[1px] stroke-border",
+                  'data-[level="0"]:fill-muted',
+                  'data-[level="1"]:fill-muted-foreground/20',
+                  'data-[level="2"]:fill-muted-foreground/40',
+                  'data-[level="3"]:fill-muted-foreground/60',
+                  'data-[level="4"]:fill-muted-foreground/80',
+                )}
+                data-level={level}
+                height={blockSize}
+                rx={blockRadius}
+                ry={blockRadius}
+                width={blockSize}
+              />
+            </svg>
+          ),
+        )}
       <span className="ml-1 text-muted-foreground">{labels.legend?.more || "More"}</span>
     </div>
   );

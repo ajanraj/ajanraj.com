@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -30,7 +30,7 @@ function PhotosPage() {
       return res.json();
     },
   });
-  const photos: Photo[] = data?.photos || [];
+  const photos: Photo[] = useMemo(() => data?.photos || [], [data?.photos]);
 
   const [carouselOpen, setCarouselOpen] = useState(false);
   const [carouselIndex, setCarouselIndex] = useState(0);
@@ -77,28 +77,34 @@ function PhotosPage() {
 
   const startLoadingImage = useCallback(
     (index: number, imageType: "thumbnail" | "fullSize" = "thumbnail") => {
-      if (!photos[index]) {
+      const photo = photos[index];
+      if (!photo) {
         return;
       }
 
       const statusKey = imageType === "fullSize" ? `${index}-full` : `${index}`;
-      const currentStatus = imageStatuses.get(statusKey) || "idle";
-      if (currentStatus !== "idle") {
-        return;
-      }
 
-      setImageStatuses((prev) => new Map(prev).set(statusKey, "loading"));
+      setImageStatuses((prev) => {
+        const currentStatus = prev.get(statusKey) || "idle";
+        if (currentStatus !== "idle") {
+          return prev;
+        }
 
-      const img = new window.Image();
-      img.onload = () => {
-        setImageStatuses((prev) => new Map(prev).set(statusKey, "loaded"));
-      };
-      img.onerror = () => {
-        setImageStatuses((prev) => new Map(prev).set(statusKey, "error"));
-      };
-      img.src = imageType === "fullSize" ? photos[index].fullSize : photos[index].thumbnail;
+        const next = new Map(prev).set(statusKey, "loading");
+
+        const img = new window.Image();
+        img.onload = () => {
+          setImageStatuses((p) => new Map(p).set(statusKey, "loaded"));
+        };
+        img.onerror = () => {
+          setImageStatuses((p) => new Map(p).set(statusKey, "error"));
+        };
+        img.src = imageType === "fullSize" ? photo.fullSize : photo.thumbnail;
+
+        return next;
+      });
     },
-    [photos, imageStatuses],
+    [photos],
   );
 
   // Simplified intersection observer - cache makes loading fast
