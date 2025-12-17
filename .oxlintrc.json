@@ -1,0 +1,11 @@
+{
+  "plugins": ["import", "react", "unicorn", "typescript"],
+  "ignorePatterns": [
+    "**/src/routeTree.gen.ts",
+    "**/src/styles.css",
+    "**/node_modules/**",
+    "**/dist/**",
+    "**/.output/**"
+  ],
+  "rules": {}
+}

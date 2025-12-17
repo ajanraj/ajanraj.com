@@ -1,23 +1,18 @@
-import {
-  HeadContent,
-  Outlet,
-  Scripts,
-  createRootRouteWithContext,
-} from '@tanstack/react-router'
-import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
-import { TanStackDevtools } from '@tanstack/react-devtools'
+import { HeadContent, Outlet, Scripts, createRootRouteWithContext } from "@tanstack/react-router";
+import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
+import { TanStackDevtools } from "@tanstack/react-devtools";
 
-import Nav from '@/components/nav'
-import Footer from '@/components/footer'
+import Nav from "@/components/nav";
+import Footer from "@/components/footer";
 
-import TanStackQueryDevtools from '@/integrations/tanstack-query/devtools'
+import TanStackQueryDevtools from "@/integrations/tanstack-query/devtools";
 
-import appCss from '@/styles.css?url'
+import appCss from "@/styles.css?url";
 
-import type { QueryClient } from '@tanstack/react-query'
+import type { QueryClient } from "@tanstack/react-query";
 
 interface MyRouterContext {
-  queryClient: QueryClient
+  queryClient: QueryClient;
 }
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
@@ -30,58 +25,58 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
   head: () => ({
     meta: [
       {
-        charSet: 'utf-8',
+        charSet: "utf-8",
       },
       {
-        name: 'viewport',
-        content: 'width=device-width, initial-scale=1',
+        name: "viewport",
+        content: "width=device-width, initial-scale=1",
       },
       {
-        title: 'Ajan Raj',
+        title: "Ajan Raj",
       },
       {
-        name: 'description',
-        content: 'Student and developer, building stuff that teaches me something new',
+        name: "description",
+        content: "Student and developer, building stuff that teaches me something new",
       },
     ],
     links: [
       {
-        rel: 'icon',
-        href: '/favicon.ico',
+        rel: "icon",
+        href: "/favicon.ico",
       },
       {
-        rel: 'stylesheet',
+        rel: "stylesheet",
         href: appCss,
       },
       {
-        rel: 'preconnect',
-        href: 'https://fonts.googleapis.com',
+        rel: "preconnect",
+        href: "https://fonts.googleapis.com",
       },
       {
-        rel: 'preconnect',
-        href: 'https://fonts.gstatic.com',
-        crossOrigin: 'anonymous',
+        rel: "preconnect",
+        href: "https://fonts.gstatic.com",
+        crossOrigin: "anonymous",
       },
       {
-        rel: 'stylesheet',
-        href: 'https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;700&family=Lora:wght@400;700&display=swap',
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;700&family=Lora:wght@400;700&display=swap",
       },
       {
-        rel: 'stylesheet',
-        href: 'https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css',
+        rel: "stylesheet",
+        href: "https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css",
       },
     ],
     scripts: [
       {
-        src: 'https://umami.ajanraj.com/script.js',
-        'data-website-id': '44b7a203-2f5e-4e57-abba-1988d082ddfd',
+        src: "https://umami.ajanraj.com/script.js",
+        "data-website-id": "44b7a203-2f5e-4e57-abba-1988d082ddfd",
         defer: true,
       },
     ],
   }),
 
   component: RootComponent,
-})
+});
 
 function RootComponent() {
   return (
@@ -97,11 +92,11 @@ function RootComponent() {
         </div>
         <TanStackDevtools
           config={{
-            position: 'bottom-right',
+            position: "bottom-right",
           }}
           plugins={[
             {
-              name: 'Tanstack Router',
+              name: "Tanstack Router",
               render: <TanStackRouterDevtoolsPanel />,
             },
             TanStackQueryDevtools,
@@ -110,5 +105,5 @@ function RootComponent() {
         <Scripts />
       </body>
     </html>
-  )
+  );
 }
