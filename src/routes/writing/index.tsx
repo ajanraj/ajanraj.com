@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { allPosts } from "content-collections";
 
-// Type for post metadata
 type PostMetadata = {
   title: string;
   publishedAt: string;
@@ -8,33 +8,16 @@ type PostMetadata = {
   slug: string;
 };
 
-// Import all MDX files eagerly at build time to extract their metadata
-// The glob import runs at build time, not runtime - works on Cloudflare Workers
-const mdxModules = import.meta.glob("/content/writing/*.mdx", {
-  eager: true,
-  import: "frontmatter",
-}) as Record<string, { title: string; publishedAt: string; summary: string; private?: boolean }>;
+const sortedPosts: PostMetadata[] = allPosts
+  .filter((post) => !post.private && post.published !== false)
+  .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
+  .map((post) => ({
+    title: post.title,
+    publishedAt: post.publishedAt,
+    summary: post.summary,
+    slug: post.slug,
+  }));
 
-// Build posts array from the imported modules
-const allPosts: PostMetadata[] = Object.entries(mdxModules)
-  .map(([path, frontmatter]) => {
-    if (frontmatter.private) return null;
-    const slug = path.replace("/content/writing/", "").replace(".mdx", "");
-    return {
-      title: frontmatter.title,
-      publishedAt: frontmatter.publishedAt,
-      summary: frontmatter.summary,
-      slug,
-    };
-  })
-  .filter(Boolean) as PostMetadata[];
-
-// Sort by date
-const sortedPosts = allPosts.sort(
-  (a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime(),
-);
-
-// Format date helper function
 function formatDate(dateString: string) {
   const date = new Date(dateString);
   return date.toLocaleDateString("en-US", {

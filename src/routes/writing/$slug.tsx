@@ -1,43 +1,18 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
 import { Badge } from "@/components/ui/badge";
-import { Suspense, lazy, useMemo } from "react";
+import { Markdown } from "@/components/Markdown";
+import { allPosts } from "content-collections";
 
-// Pre-compile all MDX files at build time using Vite's glob import
-const mdxModules = import.meta.glob("/content/writing/*.mdx", { eager: false });
-
-// Import frontmatter at build time
-const frontmatterModules = import.meta.glob("/content/writing/*.mdx", {
-  eager: true,
-  import: "frontmatter",
-}) as Record<
-  string,
-  {
-    title: string;
-    publishedAt: string;
-    summary: string;
-    excerpt?: string;
-    coverImage?: string;
-    author?: string;
-    readingTime?: number;
-    tags?: string[];
-    private?: boolean;
-    published?: boolean;
-  }
->;
-
-// Build a map of slug to metadata at build time
-const postsMetadata = Object.entries(frontmatterModules).reduce(
-  (acc, [path, frontmatter]) => {
-    const slug = path.replace("/content/writing/", "").replace(".mdx", "");
-    if (!frontmatter.private && frontmatter.published !== false) {
-      acc[slug] = { ...frontmatter, slug };
+const postsMetadata = allPosts.reduce(
+  (acc, post) => {
+    if (!post.private && post.published !== false) {
+      acc[post.slug] = post;
     }
     return acc;
   },
-  {} as Record<string, (typeof frontmatterModules)[string] & { slug: string }>,
+  {} as Record<string, (typeof allPosts)[number]>,
 );
 
-// Format date helper function
 function formatDate(dateString: string) {
   const date = new Date(dateString);
   return date.toLocaleDateString("en-US", {
@@ -63,16 +38,6 @@ function WritingPost() {
   const metadata = Route.useLoaderData();
   const formattedDate = formatDate(metadata.publishedAt);
 
-  // Dynamically import the MDX component
-  const MDXContent = useMemo(() => {
-    const importPath = `/content/writing/${metadata.slug}.mdx`;
-    const loader = mdxModules[importPath];
-    if (!loader) {
-      return () => <div>MDX file not found</div>;
-    }
-    return lazy(() => loader() as Promise<{ default: React.ComponentType }>);
-  }, [metadata.slug]);
-
   return (
     <main className="px-8 pt-4">
       <div className="relative">
@@ -89,10 +54,14 @@ function WritingPost() {
             )}
             <h1 className="mb-2 font-bold text-3xl">{metadata.title}</h1>
             {metadata.excerpt && (
-              <p className="mb-4 text-muted-foreground text-xl">{metadata.excerpt}</p>
+              <p className="mb-4 text-muted-foreground text-xl">
+                {metadata.excerpt}
+              </p>
             )}
             <div className="flex items-center text-muted-foreground text-sm">
-              {metadata.author && <span className="mr-4">By {metadata.author}</span>}
+              {metadata.author && (
+                <span className="mr-4">By {metadata.author}</span>
+              )}
               <time dateTime={metadata.publishedAt}>{formattedDate}</time>
               {metadata.readingTime && (
                 <span className="ml-4">{metadata.readingTime} min read</span>
@@ -106,11 +75,10 @@ function WritingPost() {
               </div>
             )}
           </header>
-          <div className="prose prose-invert max-w-none">
-            <Suspense fallback={<div>Loading content...</div>}>
-              <MDXContent />
-            </Suspense>
-          </div>
+          <Markdown
+            content={metadata.content}
+            className="prose prose-invert max-w-none"
+          />
         </article>
       </div>
     </main>
