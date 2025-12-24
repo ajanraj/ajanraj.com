@@ -54,14 +54,10 @@ function WritingPost() {
             )}
             <h1 className="mb-2 font-bold text-3xl">{metadata.title}</h1>
             {metadata.excerpt && (
-              <p className="mb-4 text-muted-foreground text-xl">
-                {metadata.excerpt}
-              </p>
+              <p className="mb-4 text-muted-foreground text-xl">{metadata.excerpt}</p>
             )}
             <div className="flex items-center text-muted-foreground text-sm">
-              {metadata.author && (
-                <span className="mr-4">By {metadata.author}</span>
-              )}
+              {metadata.author && <span className="mr-4">By {metadata.author}</span>}
               <time dateTime={metadata.publishedAt}>{formattedDate}</time>
               {metadata.readingTime && (
                 <span className="ml-4">{metadata.readingTime} min read</span>
@@ -75,10 +71,7 @@ function WritingPost() {
               </div>
             )}
           </header>
-          <Markdown
-            content={metadata.content}
-            className="prose prose-invert max-w-none"
-          />
+          <Markdown content={metadata.content} className="prose prose-invert max-w-none" />
         </article>
       </div>
     </main>
