@@ -74,7 +74,7 @@ function QuotesPage() {
             />
           </g>
         </svg>
-        <h1 className="font-medium text-4xl tracking-tight">Quotes</h1>
+        <h1 className="page-heading font-medium text-3xl md:text-5xl tracking-tight">Quotes</h1>
         <p className="mt-2 text-muted-foreground">
           Some quotes that I find interesting or inspiring.
         </p>

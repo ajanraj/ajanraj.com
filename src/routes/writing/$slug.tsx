@@ -39,7 +39,7 @@ function WritingPost() {
   const formattedDate = formatDate(metadata.publishedAt);
 
   return (
-    <main className="px-8 pt-4">
+    <main className="border-t border-dashed px-8 pt-8">
       <div className="relative">
         <article>
           <header className="mb-8">
@@ -52,7 +52,7 @@ function WritingPost() {
                 />
               </div>
             )}
-            <h1 className="mb-2 font-bold text-3xl">{metadata.title}</h1>
+            <h1 className="page-heading mb-2 font-bold text-2xl md:text-4xl">{metadata.title}</h1>
             {metadata.excerpt && (
               <p className="mb-4 text-muted-foreground text-xl">{metadata.excerpt}</p>
             )}

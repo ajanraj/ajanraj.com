@@ -57,14 +57,14 @@ function HomePage() {
       <div className="flex items-center gap-6 border-y border-dashed p-8">
         <img
           alt="Avatar"
-          className="size-20 rounded-full object-cover"
+          className="size-20 shrink-0 rounded-full object-cover"
           height={80}
           src={RESUME.avatar_path}
           width={80}
         />
         <div>
-          <h1 className="text-3xl tracking-tight">{RESUME.name}</h1>
-          <p className="mt-1 text-lg opacity-80">{RESUME.bio.intro}</p>
+          <h1 className="page-heading text-4xl md:text-5xl tracking-tight">{RESUME.name}</h1>
+          <p className="mt-1 md:text-lg opacity-80 text-sm">{RESUME.bio.intro}</p>
         </div>
       </div>
 

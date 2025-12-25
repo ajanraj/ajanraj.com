@@ -24,7 +24,9 @@ function ProjectPage() {
       <div className="mb-8">
         <div className="flex items-start justify-between">
           <div>
-            <h1 className="font-medium text-4xl tracking-tight">{project.name}</h1>
+            <h1 className="page-heading font-medium text-3xl md:text-5xl tracking-tight">
+              {project.name}
+            </h1>
             <p className="mt-2 text-lg text-muted-foreground">{project.description}</p>
           </div>
           <Badge variant="secondary">{project.year}</Badge>

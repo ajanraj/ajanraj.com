@@ -8,77 +8,85 @@
 @theme {
   --font-sans: "Lora", serif;
   --font-mono: "Geist Mono", monospace;
+  --font-heading: "Instrument Serif", serif;
 }
 
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
+  /* lucumr exact colors - light mode */
+  --background: #ffffff;
+  --foreground: #000000;
+  --card: #ffffff;
+  --card-foreground: #000000;
+  --popover: #ffffff;
+  --popover-foreground: #000000;
+  --primary: #115ca1;
+  --primary-foreground: #ffffff;
+  --secondary: #cd0e0e;
+  --secondary-foreground: #ffffff;
+  --muted: #fafafa;
+  --muted-foreground: #7b8894;
+  --accent: #eee;
+  --accent-foreground: #1b3156;
+  --destructive: #cd0e0e;
+  --destructive-foreground: #ffffff;
+  --border: #adbac7;
+  --input: #adbac7;
+  --ring: #115ca1;
+  --header-color: #1b3156;
+  --faded-color: #7b8894;
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
   --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --sidebar: #fafafa;
+  --sidebar-foreground: #000000;
+  --sidebar-primary: #115ca1;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #eee;
+  --sidebar-accent-foreground: #1b3156;
+  --sidebar-border: #adbac7;
+  --sidebar-ring: #115ca1;
+  color-scheme: light dark;
 }
 
 .dark {
-  --background: oklch(19.13% 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.145 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.145 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.985 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.396 0.141 25.723);
-  --destructive-foreground: oklch(0.637 0.237 25.331);
-  --border: oklch(0.269 0 0);
-  --input: oklch(0.269 0 0);
-  --ring: oklch(0.439 0 0);
+  /* lucumr exact colors - dark mode */
+  --background: #1b3156;
+  --foreground: #dce7f3;
+  --card: #243552;
+  --card-foreground: #dce7f3;
+  --popover: #243552;
+  --popover-foreground: #dce7f3;
+  --primary: #66b3ff;
+  --primary-foreground: #1b3156;
+  --secondary: #ff6666;
+  --secondary-foreground: #1b3156;
+  --muted: #2a3f64;
+  --muted-foreground: #aec3d6;
+  --accent: #2a3f64;
+  --accent-foreground: #96afda;
+  --destructive: #ff6666;
+  --destructive-foreground: #1b3156;
+  --border: #819bb4;
+  --input: #819bb4;
+  --ring: #66b3ff;
+  --header-color: #96afda;
+  --faded-color: #aec3d6;
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
   --chart-3: oklch(0.769 0.188 70.08);
   --chart-4: oklch(0.627 0.265 303.9);
   --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(0.269 0 0);
-  --sidebar-ring: oklch(0.439 0 0);
+  --sidebar: #243552;
+  --sidebar-foreground: #dce7f3;
+  --sidebar-primary: #66b3ff;
+  --sidebar-primary-foreground: #1b3156;
+  --sidebar-accent: #2a3f64;
+  --sidebar-accent-foreground: #96afda;
+  --sidebar-border: #819bb4;
+  --sidebar-ring: #66b3ff;
 }
 
 @theme inline {
@@ -145,6 +153,49 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.prose h1 {
+  font-family: var(--font-heading);
+  font-size: 2.5rem;
+  margin-top: 1em;
+  margin-bottom: 0.25em;
+}
+
+.prose h2 {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  margin-top: 1em;
+  margin-bottom: 0.25em;
+}
+
+.prose h3 {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  margin-top: 0.75em;
+  margin-bottom: 0.25em;
+}
+
+.prose h4,
+.prose h5,
+.prose h6 {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  margin-top: 0.75em;
+  margin-bottom: 0.25em;
+}
+
+.prose h1 a.anchor,
+.prose h2 a.anchor,
+.prose h3 a.anchor,
+.prose h4 a.anchor,
+.prose h5 a.anchor,
+.prose h6 a.anchor {
+  text-decoration: none;
+}
+
+.page-heading {
+  font-family: var(--font-heading);
 }
 
 html {

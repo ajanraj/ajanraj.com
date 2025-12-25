@@ -4,6 +4,7 @@ import { TanStackDevtools } from "@tanstack/react-devtools";
 
 import Nav from "@/components/nav";
 import Footer from "@/components/footer";
+import WaveShader from "@/components/wave-shader";
 
 import TanStackQueryDevtools from "@/integrations/tanstack-query/devtools";
 
@@ -59,7 +60,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
       },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;700&family=Lora:wght@400;700&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;700&family=Instrument+Serif:ital@0;1&family=Lora:wght@400;700&display=swap",
       },
       {
         rel: "stylesheet",
@@ -84,12 +85,14 @@ function RootComponent() {
       <head>
         <HeadContent />
       </head>
-      <body className="antialiased font-sans">
-        <div className="mx-auto max-w-screen-md border-x border-dashed pt-10 md:pt-20">
+      <body className="antialiased font-sans flex flex-col min-h-screen">
+        <WaveShader fadeTop={false} className="h-[150px] md:h-[150px]" />
+        <div className="mx-auto w-full max-w-screen-md flex-1 px-4 md:px-10">
           <Nav />
           <Outlet />
           <Footer />
         </div>
+        <WaveShader fadeTop={true} className="h-[300px] md:h-[450px]" />
         <TanStackDevtools
           config={{
             position: "bottom-right",

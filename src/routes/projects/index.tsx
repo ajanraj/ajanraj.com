@@ -10,7 +10,7 @@ function ProjectsPage() {
   return (
     <main className="border-t border-dashed px-8 pt-8">
       <div>
-        <h1 className="font-medium text-4xl tracking-tight">Projects</h1>
+        <h1 className="page-heading font-medium text-3xl md:text-5xl tracking-tight">Projects</h1>
         <p className="mt-2 text-muted-foreground">
           A collection of projects I've built throughout my journey as a developer and hobbyist.
         </p>

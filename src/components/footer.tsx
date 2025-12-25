@@ -2,7 +2,7 @@ import { Button } from "./ui/button";
 
 export default function Footer() {
   return (
-    <footer className="mt-8 flex items-center justify-between border-t border-dashed px-8 py-6 pb-20 text-sm">
+    <footer className="mt-8 flex items-center justify-between border-t border-dashed px-8 py-6 text-sm">
       <p>Ajan Raj</p>
       <div className="flex items-center gap-1">
         <Button asChild size="sm" variant="ghost">

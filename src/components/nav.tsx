@@ -67,7 +67,7 @@ export default function Nav() {
       {hydrated && (
         <nav className="fixed bottom-3 left-0 z-10 flex w-full justify-center px-4">
           <TooltipProvider>
-            <div className="flex h-full max-w-xl justify-center rounded-lg border bg-background/75 p-0.5 shadow-xl backdrop-blur-sm">
+            <div className="flex h-full max-w-xl justify-center rounded-2xl border border-white/30 bg-white/15 p-1 shadow-2xl shadow-black/10 backdrop-blur-md dark:border-white/15 dark:bg-white/10 dark:shadow-black/30">
               <div
                 className="relative"
                 onMouseLeave={() => {
@@ -79,7 +79,7 @@ export default function Nav() {
               >
                 {/* Hover indicator */}
                 <div
-                  className="absolute top-0 z-0 rounded-md border bg-input/5 transition-all duration-150 ease-out"
+                  className="absolute top-0 z-0 rounded-lg border border-white/10 bg-white/10 transition-all duration-150 ease-out dark:bg-white/5"
                   style={{
                     left: hoverStyle.left,
                     width: hoverStyle.width,
@@ -93,14 +93,14 @@ export default function Nav() {
                 />
                 {/* Active indicator */}
                 <div
-                  className="absolute top-0 z-0 rounded-md border bg-input/50 transition-all duration-200 ease-out"
+                  className="absolute top-0 z-0 rounded-lg border border-primary/20 bg-primary/15 transition-all duration-200 ease-out dark:border-primary/30 dark:bg-primary/20"
                   style={{
                     left: indicatorStyle.left,
                     width: indicatorStyle.width,
                     height: 36,
                   }}
                 />
-                <ul className="relative z-10 flex items-center gap-0.5">
+                <ul className="relative z-10 flex items-center gap-1">
                   {tabs.map((tab, index) => (
                     <li key={tab.name}>
                       <Tooltip delayDuration={500}>
@@ -139,7 +139,7 @@ export default function Nav() {
                       </Tooltip>
                     </li>
                   ))}
-                  <Separator className="mx-0.5 min-h-4!" orientation="vertical" />
+                  <Separator className="mx-1 min-h-5! opacity-30" orientation="vertical" />
                   <li>
                     <Tooltip delayDuration={500}>
                       <TooltipTrigger asChild>

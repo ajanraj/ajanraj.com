@@ -34,21 +34,21 @@ function WritingPage() {
   const posts = Route.useLoaderData();
 
   return (
-    <main className="border-t border-dashed p-8">
+    <main className="border-t border-dashed px-8 pt-8">
       <div>
-        <h1 className="text-3xl tracking-tight">Writing</h1>
-        <p className="mt-2 text-lg text-muted-foreground">some of my notes</p>
+        <h1 className="page-heading font-medium text-3xl md:text-5xl tracking-tight">Writing</h1>
+        <p className="mt-2 text-muted-foreground">Some of my notes and thoughts.</p>
       </div>
       <table className="mt-8 w-full">
         <thead>
           <tr className="border-border border-b">
-            <th className="px-0 py-2 text-left font-normal text-muted-foreground/65 text-sm">
+            <th className="w-16 px-0 py-2 text-left font-normal text-muted-foreground/65 text-sm">
               date
             </th>
-            <th className="px-6 py-2 text-left font-normal text-muted-foreground/65 text-sm">
+            <th className="md:w-1/3 px-6 py-2 text-left font-normal text-muted-foreground/65 text-sm">
               title
             </th>
-            <th className="hidden px-4 py-2 text-left font-normal text-muted-foreground/65 text-sm md:table-cell">
+            <th className="hidden w-2/3 px-4 py-2 text-left font-normal text-muted-foreground/65 text-sm md:table-cell">
               summary
             </th>
           </tr>

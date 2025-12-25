@@ -2,7 +2,7 @@ const RESUME = {
   name: "Ajan Raj",
   avatar_path: "/me.jpg",
   bio: {
-    intro: "coder, data scientist, software engineer.",
+    intro: "writes code, breaks things, occasionally fixes them.",
     about: "TODO: move bio here",
   },
   experience: [
