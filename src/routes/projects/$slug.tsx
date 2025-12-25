@@ -12,6 +12,27 @@ export const Route = createFileRoute("/projects/$slug")({
     }
     return project;
   },
+  head: ({ loaderData }) => {
+    if (!loaderData) {
+      return { meta: [{ title: "Project Not Found | Ajan Raj" }] };
+    }
+    return {
+      meta: [
+        { title: `${loaderData.name} | Ajan Raj` },
+        { name: "description", content: loaderData.description },
+        { property: "og:title", content: `${loaderData.name} | Ajan Raj` },
+        { property: "og:description", content: loaderData.description },
+        { property: "og:type", content: "article" },
+        { property: "og:url", content: `https://ajanraj.com/projects/${loaderData.slug}` },
+        ...(loaderData.imagePath ? [{ property: "og:image", content: loaderData.imagePath }] : []),
+        { name: "twitter:card", content: loaderData.imagePath ? "summary_large_image" : "summary" },
+        { name: "twitter:title", content: `${loaderData.name} | Ajan Raj` },
+        { name: "twitter:description", content: loaderData.description },
+        ...(loaderData.imagePath ? [{ name: "twitter:image", content: loaderData.imagePath }] : []),
+      ],
+      links: [{ rel: "canonical", href: `https://ajanraj.com/projects/${loaderData.slug}` }],
+    };
+  },
   component: ProjectPage,
   notFoundComponent: () => <div>Project not found</div>,
 });

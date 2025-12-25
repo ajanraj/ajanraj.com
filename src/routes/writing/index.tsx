@@ -27,6 +27,29 @@ function formatDate(dateString: string) {
 
 export const Route = createFileRoute("/writing/")({
   loader: () => sortedPosts,
+  head: () => ({
+    meta: [
+      { title: "Writing | Ajan Raj" },
+      {
+        name: "description",
+        content: "Notes and thoughts on software engineering, technology, and more.",
+      },
+      { property: "og:title", content: "Writing | Ajan Raj" },
+      {
+        property: "og:description",
+        content: "Notes and thoughts on software engineering, technology, and more.",
+      },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://ajanraj.com/writing" },
+      { name: "twitter:card", content: "summary" },
+      { name: "twitter:title", content: "Writing | Ajan Raj" },
+      {
+        name: "twitter:description",
+        content: "Notes and thoughts on software engineering, technology, and more.",
+      },
+    ],
+    links: [{ rel: "canonical", href: "https://ajanraj.com/writing" }],
+  }),
   component: WritingPage,
 });
 

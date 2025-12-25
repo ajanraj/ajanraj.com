@@ -19,6 +19,32 @@ type Photo = {
 };
 
 export const Route = createFileRoute("/photos")({
+  head: () => ({
+    meta: [
+      { title: "Photos | Ajan Raj" },
+      {
+        name: "description",
+        content:
+          "A collection of photos taken over the years. Capturing moments from travels and everyday life with an iPhone 12 Pro Max.",
+      },
+      { property: "og:title", content: "Photos | Ajan Raj" },
+      {
+        property: "og:description",
+        content:
+          "A collection of photos taken over the years. Capturing moments from travels and everyday life with an iPhone 12 Pro Max.",
+      },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://ajanraj.com/photos" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Photos | Ajan Raj" },
+      {
+        name: "twitter:description",
+        content:
+          "A collection of photos taken over the years. Capturing moments from travels and everyday life with an iPhone 12 Pro Max.",
+      },
+    ],
+    links: [{ rel: "canonical", href: "https://ajanraj.com/photos" }],
+  }),
   component: PhotosPage,
 });
 

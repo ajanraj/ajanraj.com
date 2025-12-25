@@ -43,8 +43,31 @@ const getContributions = createServerFn().handler(async () => {
 
 export const Route = createFileRoute("/")({
   loader: () => getContributions(),
-  // Cache contributions data for 5 minutes to prevent re-fetching on every navigation
   staleTime: 1000 * 60 * 5,
+  head: () => ({
+    meta: [
+      { title: "Ajan Raj - Developer & Student" },
+      {
+        name: "description",
+        content:
+          "Student and developer passionate about creating things that teach something new. Building projects, experimenting, and learning along the way.",
+      },
+      { property: "og:title", content: "Ajan Raj - Developer & Student" },
+      {
+        property: "og:description",
+        content:
+          "Student and developer passionate about creating things that teach something new. Building projects, experimenting, and learning along the way.",
+      },
+      { property: "og:url", content: "https://ajanraj.com" },
+      { name: "twitter:title", content: "Ajan Raj - Developer & Student" },
+      {
+        name: "twitter:description",
+        content:
+          "Student and developer passionate about creating things that teach something new. Building projects, experimenting, and learning along the way.",
+      },
+    ],
+    links: [{ rel: "canonical", href: "https://ajanraj.com" }],
+  }),
   component: HomePage,
 });
 

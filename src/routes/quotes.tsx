@@ -49,6 +49,31 @@ const quotes = [
 ];
 
 export const Route = createFileRoute("/quotes")({
+  head: () => ({
+    meta: [
+      { title: "Quotes | Ajan Raj" },
+      {
+        name: "description",
+        content:
+          "A collection of inspiring quotes from Steve Jobs, Marcus Aurelius, Seneca, and other great thinkers.",
+      },
+      { property: "og:title", content: "Quotes | Ajan Raj" },
+      {
+        property: "og:description",
+        content:
+          "A collection of inspiring quotes from Steve Jobs, Marcus Aurelius, Seneca, and other great thinkers.",
+      },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://ajanraj.com/quotes" },
+      { name: "twitter:title", content: "Quotes | Ajan Raj" },
+      {
+        name: "twitter:description",
+        content:
+          "A collection of inspiring quotes from Steve Jobs, Marcus Aurelius, Seneca, and other great thinkers.",
+      },
+    ],
+    links: [{ rel: "canonical", href: "https://ajanraj.com/quotes" }],
+  }),
   component: QuotesPage,
 });
 

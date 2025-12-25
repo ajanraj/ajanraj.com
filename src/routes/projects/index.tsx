@@ -3,6 +3,31 @@ import ProjectCard from "@/components/project-card";
 import RESUME from "@/data/resume";
 
 export const Route = createFileRoute("/projects/")({
+  head: () => ({
+    meta: [
+      { title: "Projects | Ajan Raj" },
+      {
+        name: "description",
+        content:
+          "A collection of projects built throughout my journey as a developer and hobbyist. Showcasing skills and interests in software development.",
+      },
+      { property: "og:title", content: "Projects | Ajan Raj" },
+      {
+        property: "og:description",
+        content:
+          "A collection of projects built throughout my journey as a developer and hobbyist. Showcasing skills and interests in software development.",
+      },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://ajanraj.com/projects" },
+      { name: "twitter:title", content: "Projects | Ajan Raj" },
+      {
+        name: "twitter:description",
+        content:
+          "A collection of projects built throughout my journey as a developer and hobbyist. Showcasing skills and interests in software development.",
+      },
+    ],
+    links: [{ rel: "canonical", href: "https://ajanraj.com/projects" }],
+  }),
   component: ProjectsPage,
 });
 

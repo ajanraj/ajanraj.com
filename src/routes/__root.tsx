@@ -25,18 +25,27 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
   ),
   head: () => ({
     meta: [
-      {
-        charSet: "utf-8",
-      },
-      {
-        name: "viewport",
-        content: "width=device-width, initial-scale=1",
-      },
-      {
-        title: "Ajan Raj",
-      },
+      { charSet: "utf-8" },
+      { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { title: "Ajan Raj" },
       {
         name: "description",
+        content: "Student and developer, building stuff that teaches me something new",
+      },
+      { name: "author", content: "Ajan Raj" },
+      { property: "og:site_name", content: "Ajan Raj" },
+      { property: "og:locale", content: "en_US" },
+      { property: "og:type", content: "website" },
+      { property: "og:title", content: "Ajan Raj" },
+      {
+        property: "og:description",
+        content: "Student and developer, building stuff that teaches me something new",
+      },
+      { property: "og:url", content: "https://ajanraj.com" },
+      { name: "twitter:card", content: "summary" },
+      { name: "twitter:title", content: "Ajan Raj" },
+      {
+        name: "twitter:description",
         content: "Student and developer, building stuff that teaches me something new",
       },
     ],
