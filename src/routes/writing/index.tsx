@@ -78,23 +78,21 @@ function WritingPage() {
         </thead>
         <tbody className="divide-y divide-border">
           {posts.map((post) => (
-            <tr className="group relative transition-colors hover:bg-muted/50" key={post.slug}>
-              <td className="whitespace-nowrap px-0 py-3 font-mono text-muted-foreground text-sm">
-                {formatDate(post.publishedAt)}
+            <tr key={post.slug} className="group transition-colors hover:bg-muted/50">
+              <td className="whitespace-nowrap p-0 font-mono text-muted-foreground text-sm">
+                <Link to="/writing/$slug" params={{ slug: post.slug }} className="block px-0 py-3">
+                  {formatDate(post.publishedAt)}
+                </Link>
               </td>
-              <td className="px-6 py-3">
-                <span className="line-clamp-1">{post.title}</span>
+              <td className="p-0">
+                <Link to="/writing/$slug" params={{ slug: post.slug }} className="block px-6 py-3">
+                  <span className="line-clamp-1">{post.title}</span>
+                </Link>
               </td>
-              <td className="hidden px-4 py-3 text-muted-foreground text-sm md:table-cell">
-                <span className="line-clamp-1">{post.summary}</span>
-              </td>
-              <td className="absolute inset-0">
-                <Link
-                  aria-label={`Read post: ${post.title}`}
-                  className="absolute inset-0 z-10"
-                  to="/writing/$slug"
-                  params={{ slug: post.slug }}
-                />
+              <td className="hidden p-0 text-muted-foreground text-sm md:table-cell">
+                <Link to="/writing/$slug" params={{ slug: post.slug }} className="block px-4 py-3">
+                  <span className="line-clamp-1">{post.summary}</span>
+                </Link>
               </td>
             </tr>
           ))}

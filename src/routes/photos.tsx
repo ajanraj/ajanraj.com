@@ -238,6 +238,12 @@ function PhotosPage() {
               );
             })}
       </div>
+
+      <p className="mt-8 text-xs text-muted-foreground">
+        © {new Date().getFullYear()} Ajan Raj. All photos are my original work and may not be used,
+        reproduced, or distributed without permission.
+      </p>
+
       <AnimatePresence mode="popLayout">
         {carouselOpen && (
           <motion.div

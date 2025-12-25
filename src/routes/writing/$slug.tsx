@@ -44,7 +44,9 @@ export const Route = createFileRoute("/writing/$slug")({
         { property: "og:description", content: description },
         { property: "og:type", content: "article" },
         { property: "og:url", content: `https://ajanraj.com/writing/${loaderData.slug}` },
-        ...(loaderData.coverImage ? [{ property: "og:image", content: loaderData.coverImage }] : []),
+        ...(loaderData.coverImage
+          ? [{ property: "og:image", content: loaderData.coverImage }]
+          : []),
         { property: "article:published_time", content: loaderData.publishedAt },
         ...(loaderData.tags
           ? loaderData.tags.map((tag: string) => ({ property: "article:tag", content: tag }))
@@ -52,7 +54,9 @@ export const Route = createFileRoute("/writing/$slug")({
         { name: "twitter:card", content: "summary_large_image" },
         { name: "twitter:title", content: loaderData.title },
         { name: "twitter:description", content: description },
-        ...(loaderData.coverImage ? [{ name: "twitter:image", content: loaderData.coverImage }] : []),
+        ...(loaderData.coverImage
+          ? [{ name: "twitter:image", content: loaderData.coverImage }]
+          : []),
       ],
       links: [{ rel: "canonical", href: `https://ajanraj.com/writing/${loaderData.slug}` }],
     };
