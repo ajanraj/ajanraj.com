@@ -46,24 +46,21 @@ export const Route = createFileRoute("/")({
   staleTime: 1000 * 60 * 5,
   head: () => ({
     meta: [
-      { title: "Ajan Raj - Developer & Student" },
+      { title: "Ajan Raj" },
       {
         name: "description",
-        content:
-          "Student and developer passionate about creating things that teach something new. Building projects, experimenting, and learning along the way.",
+        content: "Building things that matter, one project at a time.",
       },
-      { property: "og:title", content: "Ajan Raj - Developer & Student" },
+      { property: "og:title", content: "Ajan Raj" },
       {
         property: "og:description",
-        content:
-          "Student and developer passionate about creating things that teach something new. Building projects, experimenting, and learning along the way.",
+        content: "Building things that matter, one project at a time.",
       },
       { property: "og:url", content: "https://ajanraj.com" },
-      { name: "twitter:title", content: "Ajan Raj - Developer & Student" },
+      { name: "twitter:title", content: "Ajan Raj" },
       {
         name: "twitter:description",
-        content:
-          "Student and developer passionate about creating things that teach something new. Building projects, experimenting, and learning along the way.",
+        content: "Building things that matter, one project at a time.",
       },
     ],
     links: [{ rel: "canonical", href: "https://ajanraj.com" }],
