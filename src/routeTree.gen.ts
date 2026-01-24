@@ -66,8 +66,8 @@ export interface FileRoutesByFullPath {
   '/api/photos': typeof ApiPhotosRoute
   '/projects/$slug': typeof ProjectsSlugRoute
   '/writing/$slug': typeof WritingSlugRoute
-  '/projects': typeof ProjectsIndexRoute
-  '/writing': typeof WritingIndexRoute
+  '/projects/': typeof ProjectsIndexRoute
+  '/writing/': typeof WritingIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -99,8 +99,8 @@ export interface FileRouteTypes {
     | '/api/photos'
     | '/projects/$slug'
     | '/writing/$slug'
-    | '/projects'
-    | '/writing'
+    | '/projects/'
+    | '/writing/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -160,14 +160,14 @@ declare module '@tanstack/react-router' {
     '/writing/': {
       id: '/writing/'
       path: '/writing'
-      fullPath: '/writing'
+      fullPath: '/writing/'
       preLoaderRoute: typeof WritingIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/projects/': {
       id: '/projects/'
       path: '/projects'
-      fullPath: '/projects'
+      fullPath: '/projects/'
       preLoaderRoute: typeof ProjectsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }

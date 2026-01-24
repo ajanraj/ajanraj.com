@@ -160,10 +160,12 @@ function HomePage() {
                       year: "numeric",
                     })}{" "}
                     -{" "}
-                    {new Date(`${experience.end_date}T00:00:00`).toLocaleDateString("en-US", {
-                      month: "short",
-                      year: "numeric",
-                    })}
+                    {experience.end_date === "Present"
+                      ? "Present"
+                      : new Date(`${experience.end_date}T00:00:00`).toLocaleDateString("en-US", {
+                          month: "short",
+                          year: "numeric",
+                        })}
                   </p>
                   <p className="mt-0.5 text-muted-foreground">{experience.location}</p>
                 </div>
