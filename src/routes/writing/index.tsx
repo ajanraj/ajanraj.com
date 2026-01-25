@@ -57,12 +57,12 @@ function WritingPage() {
   const posts = Route.useLoaderData();
 
   return (
-    <main className="border-t border-dashed px-8 pt-8">
-      <div>
+    <main className="page-enter border-t border-dashed px-8 pt-8">
+      <div className="section-enter" style={{ animationDelay: "40ms" }}>
         <h1 className="page-heading font-medium text-3xl md:text-5xl tracking-tight">Writing</h1>
         <p className="mt-2 text-muted-foreground">Some of my notes and thoughts.</p>
       </div>
-      <table className="mt-8 w-full">
+      <table className="mt-8 w-full section-enter" style={{ animationDelay: "80ms" }}>
         <thead>
           <tr className="border-border border-b">
             <th className="w-16 px-0 py-2 text-left font-normal text-muted-foreground/65 text-sm">
@@ -77,20 +77,32 @@ function WritingPage() {
           </tr>
         </thead>
         <tbody className="divide-y divide-border">
-          {posts.map((post) => (
-            <tr key={post.slug} className="group transition-colors hover:bg-muted/50">
+          {posts.map((post, index) => (
+            <tr
+              className="group item-enter transition-colors hover:bg-muted/50"
+              key={post.slug}
+              style={{ animationDelay: `${120 + index * 30}ms` }}
+            >
               <td className="whitespace-nowrap p-0 font-mono text-muted-foreground text-sm">
                 <Link to="/writing/$slug" params={{ slug: post.slug }} className="block px-0 py-3">
                   {formatDate(post.publishedAt)}
                 </Link>
               </td>
               <td className="p-0">
-                <Link to="/writing/$slug" params={{ slug: post.slug }} className="block px-6 py-3">
+                <Link
+                  className="block px-6 py-3 transition-transform duration-150 ease-out group-hover:translate-x-1 motion-reduce:transform-none motion-reduce:transition-none"
+                  params={{ slug: post.slug }}
+                  to="/writing/$slug"
+                >
                   <span className="line-clamp-1">{post.title}</span>
                 </Link>
               </td>
               <td className="hidden p-0 text-muted-foreground text-sm md:table-cell">
-                <Link to="/writing/$slug" params={{ slug: post.slug }} className="block px-4 py-3">
+                <Link
+                  className="block px-4 py-3 transition-transform duration-150 ease-out group-hover:translate-x-1 motion-reduce:transform-none motion-reduce:transition-none"
+                  params={{ slug: post.slug }}
+                  to="/writing/$slug"
+                >
                   <span className="line-clamp-1">{post.summary}</span>
                 </Link>
               </td>

@@ -168,21 +168,24 @@ function PhotosPage() {
   }, [photos.length, startLoadingImage]);
 
   return (
-    <main className="border-t border-dashed px-8 pt-8">
-      <div className="mb-8">
+    <main className="page-enter border-t border-dashed px-8 pt-8">
+      <div className="mb-8 section-enter" style={{ animationDelay: "40ms" }}>
         <h1 className="page-heading font-medium text-3xl md:text-5xl tracking-tight">Photos</h1>
         <p className="mt-2 text-muted-foreground">
           A collection of photos I've taken over the years. I'm not a professional photographer, but
           I enjoy capturing moments.
         </p>
       </div>
-      <p className="mb-8 text-sm opacity-80">
+      <p className="mb-8 text-sm opacity-80 section-enter" style={{ animationDelay: "80ms" }}>
         My photos are taken with an iPhone 12 Pro Max (Wide: 26mm f/1.6, Ultra Wide: 13mm f/2.4,
         Telephoto: 65mm f/2.2).
       </p>
 
       {/* Photo Grid */}
-      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3">
+      <div
+        className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 section-enter"
+        style={{ animationDelay: "120ms" }}
+      >
         {isLoading || error
           ? Array.from({ length: 10 }, (_, i) => `skeleton-${i}`).map((key) => (
               <div className="aspect-square w-full overflow-hidden rounded-xl bg-muted" key={key}>
@@ -195,21 +198,22 @@ function PhotosPage() {
               return (
                 <motion.div
                   animate={{
-                    filter: status === "loaded" ? "blur(0px)" : "blur(10px)",
+                    filter: status === "loaded" ? "blur(0px)" : "blur(8px)",
                     opacity: status === "loaded" ? 1 : 0,
                   }}
                   className="relative aspect-square w-full overflow-hidden rounded-xl bg-muted hover:cursor-pointer"
                   data-index={i}
-                  initial={{ opacity: 0, y: 20, filter: "blur(10px)" }}
+                  initial={{ opacity: 0, y: 12, filter: "blur(8px)" }}
                   key={photo.name}
                   onClick={() => {
                     setCarouselOpen(true);
                     setCarouselIndex(i);
                   }}
                   transition={{
-                    duration: 0.5,
-                    filter: { duration: 0.5, ease: "easeOut" },
-                    delay: (i * 0.1) / 4, // Stagger each photo individually
+                    duration: 0.35,
+                    ease: "easeOut",
+                    filter: { duration: 0.35, ease: "easeOut" },
+                    delay: i * 0.04, // Stagger each photo individually
                   }}
                 >
                   {status !== "loaded" && (
@@ -251,7 +255,7 @@ function PhotosPage() {
             className="fixed inset-0 z-50"
             exit={{ opacity: 0 }}
             initial={{ opacity: 0 }}
-            transition={{ duration: 0.05 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
           >
             {/* Background overlay */}
             <motion.div
@@ -260,13 +264,14 @@ function PhotosPage() {
               exit={{ opacity: 0 }}
               initial={{ opacity: 0 }}
               onClick={() => setCarouselOpen(false)}
+              transition={{ duration: 0.2, ease: "easeOut" }}
             />
 
             {/* Top controls */}
             <div className="fixed top-4 right-4 z-[60] flex gap-2">
               <Button
                 aria-label="Close carousel"
-                className="flex h-6 justify-between gap-1 rounded-full border p-2"
+                className="flex h-6 justify-between gap-1 rounded-full border p-2 transition-transform duration-150 ease-out hover:scale-[1.02] active:scale-[0.98] motion-reduce:transform-none motion-reduce:transition-none"
                 onClick={() => setCarouselOpen(false)}
                 variant="ghost"
               >
@@ -278,7 +283,7 @@ function PhotosPage() {
             {/* Previous button */}
             <button
               aria-label="Previous photo"
-              className="-translate-y-1/2 fixed top-1/2 left-4 z-[60] cursor-pointer text-muted-foreground transition-colors hover:text-foreground"
+              className="-translate-y-1/2 fixed top-1/2 left-4 z-[60] cursor-pointer text-muted-foreground transition-all duration-150 ease-out hover:text-foreground hover:scale-[1.06] active:scale-[0.98] motion-reduce:transform-none motion-reduce:transition-none"
               onClick={navigatePrevious}
               type="button"
             >
@@ -288,7 +293,7 @@ function PhotosPage() {
             {/* Next button */}
             <button
               aria-label="Next photo"
-              className="-translate-y-1/2 fixed top-1/2 right-4 z-[60] cursor-pointer text-muted-foreground transition-colors hover:text-foreground"
+              className="-translate-y-1/2 fixed top-1/2 right-4 z-[60] cursor-pointer text-muted-foreground transition-all duration-150 ease-out hover:text-foreground hover:scale-[1.06] active:scale-[0.98] motion-reduce:transform-none motion-reduce:transition-none"
               onClick={navigateNext}
               type="button"
             >
@@ -314,12 +319,12 @@ function PhotosPage() {
                     <motion.div
                       animate={{
                         opacity: isActive ? 1 : 0,
-                        scale: isActive ? 1 : 0.95,
+                        scale: isActive ? 1 : 0.98,
                       }}
                       className={`absolute ${isActive ? "z-10" : "z-0"}`}
-                      initial={{ opacity: 0, scale: 0.95 }}
+                      initial={{ opacity: 0, scale: 0.98 }}
                       key={`${photo.fullSize}-${actualIndex}`}
-                      transition={{ duration: 0.3, ease: "easeOut" }}
+                      transition={{ duration: 0.24, ease: "easeOut" }}
                     >
                       {isActive && status !== "loaded" && (
                         <motion.div
@@ -336,14 +341,14 @@ function PhotosPage() {
                       <motion.img
                         alt={`Item ${actualIndex + 1} of ${photos.length}`}
                         animate={{
-                          filter: status === "loaded" ? "blur(0px)" : "blur(15px)",
+                          filter: status === "loaded" ? "blur(0px)" : "blur(12px)",
                           opacity: status === "loaded" ? 1 : 0,
                         }}
                         className="pointer-events-none h-auto max-h-[80vh] w-auto max-w-[90vw] rounded-lg object-contain select-none"
                         draggable={false}
                         onContextMenu={(e) => e.preventDefault()}
                         height={1080}
-                        initial={{ filter: "blur(15px)", opacity: 0 }}
+                        initial={{ filter: "blur(12px)", opacity: 0 }}
                         onError={() => {
                           setImageStatuses((prev) => new Map(prev).set(statusKey, "error"));
                         }}
@@ -352,8 +357,8 @@ function PhotosPage() {
                         }}
                         src={photo.fullSize}
                         transition={{
-                          filter: { duration: 0.3, ease: "easeOut" },
-                          opacity: { duration: 0.1 },
+                          filter: { duration: 0.25, ease: "easeOut" },
+                          opacity: { duration: 0.15, ease: "easeOut" },
                         }}
                         width={1920}
                       />

@@ -83,8 +83,8 @@ function QuotesPage() {
   );
 
   return (
-    <main className="border-t border-dashed px-8 pt-8">
-      <div className="relative">
+    <main className="page-enter border-t border-dashed px-8 pt-8">
+      <div className="relative section-enter" style={{ animationDelay: "40ms" }}>
         <svg
           aria-label="Quote marks decoration"
           className="-z-10 -top-8 -left-10 absolute h-14 w-14 text-muted"
@@ -105,8 +105,12 @@ function QuotesPage() {
         </p>
       </div>
       <ul className="mt-10 space-y-8">
-        {sortedQuotes.map((quote, _i) => (
-          <li className="font-serif" key={quote.text}>
+        {sortedQuotes.map((quote, index) => (
+          <li
+            className="item-enter font-serif"
+            key={quote.text}
+            style={{ animationDelay: `${100 + index * 40}ms` }}
+          >
             <blockquote className="italic">{quote.text}</blockquote>
             <p className="mt-1 text-muted-foreground">—{quote.author}</p>
           </li>

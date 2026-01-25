@@ -70,15 +70,15 @@ function WritingPost() {
   const formattedDate = formatDate(metadata.publishedAt);
 
   return (
-    <main className="border-t border-dashed px-8 pt-8">
+    <main className="page-enter border-t border-dashed px-8 pt-8">
       <div className="relative">
         <article>
-          <header className="mb-8">
+          <header className="mb-8 section-enter" style={{ animationDelay: "40ms" }}>
             {metadata.coverImage && (
-              <div className="mb-6">
+              <div className="mb-6 section-enter" style={{ animationDelay: "80ms" }}>
                 <img
                   alt={`Cover image for ${metadata.title}`}
-                  className="rounded-lg"
+                  className="rounded-lg transition-transform duration-300 ease-out motion-reduce:transform-none motion-reduce:transition-none"
                   src={metadata.coverImage}
                 />
               </div>
@@ -96,13 +96,23 @@ function WritingPost() {
             </div>
             {metadata.tags && metadata.tags.length > 0 && (
               <div className="mt-4 flex flex-wrap gap-2">
-                {metadata.tags.map((tag: string) => (
-                  <Badge key={tag}>{tag}</Badge>
+                {metadata.tags.map((tag: string, index: number) => (
+                  <div
+                    className="item-enter motion-reduce:transform-none motion-reduce:transition-none"
+                    key={tag}
+                    style={{ animationDelay: `${120 + index * 40}ms` }}
+                  >
+                    <Badge>{tag}</Badge>
+                  </div>
                 ))}
               </div>
             )}
           </header>
-          <Markdown content={metadata.content} className="prose prose-invert max-w-none" />
+          <Markdown
+            className="prose prose-invert max-w-none section-enter"
+            content={metadata.content}
+            style={{ animationDelay: "120ms" }}
+          />
         </article>
       </div>
     </main>

@@ -51,7 +51,7 @@ export const Contributions = ({ data }: ContributionsProps) => (
                 level === 4 && "bg-[#216e39] dark:bg-[#39d353]",
               )}
             />
-            <span className="-top-8 absolute hidden rounded bg-popover px-2 py-1 text-popover-foreground text-xs shadow-md group-hover:block">
+            <span className="-top-8 pointer-events-none absolute translate-y-1 rounded bg-popover px-2 py-1 text-popover-foreground text-xs opacity-0 shadow-md transition-all duration-150 ease-out group-hover:translate-y-0 group-hover:opacity-100 motion-reduce:transform-none motion-reduce:transition-none">
               Level {level}
             </span>
           </div>

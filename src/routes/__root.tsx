@@ -18,7 +18,7 @@ interface MyRouterContext {
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
   notFoundComponent: () => (
-    <main className="flex min-h-[60vh] flex-col items-center justify-center px-8">
+    <main className="page-enter flex min-h-[60vh] flex-col items-center justify-center px-8">
       <h1 className="text-4xl font-bold">404</h1>
       <p className="mt-2 text-muted-foreground">Page not found</p>
     </main>

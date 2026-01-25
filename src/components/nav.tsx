@@ -79,7 +79,7 @@ export default function Nav() {
               >
                 {/* Hover indicator */}
                 <div
-                  className="absolute top-0 z-0 rounded-lg border border-white/10 bg-white/10 transition-all duration-150 ease-out dark:bg-white/5"
+                  className="absolute top-0 z-0 rounded-lg border border-white/10 bg-white/10 transition-all duration-150 ease-out motion-reduce:transition-none dark:bg-white/5"
                   style={{
                     left: hoverStyle.left,
                     width: hoverStyle.width,
@@ -93,7 +93,7 @@ export default function Nav() {
                 />
                 {/* Active indicator */}
                 <div
-                  className="absolute top-0 z-0 rounded-lg border border-primary/20 bg-primary/15 transition-all duration-200 ease-out dark:border-primary/30 dark:bg-primary/20"
+                  className="absolute top-0 z-0 rounded-lg border border-primary/20 bg-primary/15 transition-all duration-200 ease-out motion-reduce:transition-none dark:border-primary/30 dark:bg-primary/20"
                   style={{
                     left: indicatorStyle.left,
                     width: indicatorStyle.width,
@@ -107,7 +107,7 @@ export default function Nav() {
                         <TooltipTrigger asChild>
                           <Button
                             asChild
-                            className="h-9 w-9"
+                            className="h-9 w-9 transition-transform duration-150 ease-out hover:scale-[1.06] active:scale-[0.98] motion-reduce:transform-none motion-reduce:transition-none"
                             onMouseEnter={() => {
                               setHoverStyle({
                                 left: tabRefs.current[index]?.offsetLeft ?? 0,
@@ -145,7 +145,7 @@ export default function Nav() {
                       <TooltipTrigger asChild>
                         <Button
                           asChild
-                          className="h-9 w-9 text-muted-foreground opacity-75 hover:opacity-100"
+                          className="h-9 w-9 text-muted-foreground opacity-75 transition-transform duration-150 ease-out hover:scale-[1.06] hover:opacity-100 active:scale-[0.98] motion-reduce:transform-none motion-reduce:transition-none"
                           size="icon"
                           variant="ghost"
                         >
@@ -164,7 +164,7 @@ export default function Nav() {
                       <TooltipTrigger asChild>
                         <Button
                           asChild
-                          className="h-9 w-9 text-muted-foreground opacity-75 hover:opacity-100"
+                          className="h-9 w-9 text-muted-foreground opacity-75 transition-transform duration-150 ease-out hover:scale-[1.06] hover:opacity-100 active:scale-[0.98] motion-reduce:transform-none motion-reduce:transition-none"
                           size="icon"
                           variant="ghost"
                         >

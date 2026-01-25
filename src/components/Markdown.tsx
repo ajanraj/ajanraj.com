@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import parse, { type HTMLReactParserOptions, Element, domToReact } from "html-react-parser";
 import { Link } from "@tanstack/react-router";
 import { renderMarkdown, type MarkdownResult } from "@/utils/markdown";
@@ -6,9 +6,10 @@ import { renderMarkdown, type MarkdownResult } from "@/utils/markdown";
 type MarkdownProps = {
   content: string;
   className?: string;
+  style?: CSSProperties;
 };
 
-export function Markdown({ content, className }: MarkdownProps) {
+export function Markdown({ content, className, style }: MarkdownProps) {
   const [result, setResult] = useState<MarkdownResult | null>(null);
 
   useEffect(() => {
@@ -16,7 +17,11 @@ export function Markdown({ content, className }: MarkdownProps) {
   }, [content]);
 
   if (!result) {
-    return <div className={className}>Loading...</div>;
+    return (
+      <div className={className} style={style}>
+        Loading...
+      </div>
+    );
   }
 
   const options: HTMLReactParserOptions = {
@@ -36,5 +41,9 @@ export function Markdown({ content, className }: MarkdownProps) {
     },
   };
 
-  return <div className={className}>{parse(result.markup, options)}</div>;
+  return (
+    <div className={className} style={style}>
+      {parse(result.markup, options)}
+    </div>
+  );
 }

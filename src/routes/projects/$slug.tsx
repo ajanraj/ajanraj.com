@@ -41,8 +41,8 @@ function ProjectPage() {
   const project = Route.useLoaderData();
 
   return (
-    <main className="border-t border-dashed px-8 pt-8">
-      <div className="mb-8">
+    <main className="page-enter border-t border-dashed px-8 pt-8">
+      <div className="mb-8 section-enter" style={{ animationDelay: "40ms" }}>
         <div className="flex items-start justify-between">
           <div>
             <h1 className="page-heading font-medium text-3xl md:text-5xl tracking-tight">
@@ -82,8 +82,15 @@ function ProjectPage() {
       </div>
 
       {project.imagePath && (
-        <div className="mt-8 overflow-hidden rounded-xl border">
-          <img alt={`${project.name} screenshot`} className="w-full" src={project.imagePath} />
+        <div
+          className="mt-8 overflow-hidden rounded-xl border section-enter"
+          style={{ animationDelay: "120ms" }}
+        >
+          <img
+            alt={`${project.name} screenshot`}
+            className="w-full transition-transform duration-300 ease-out motion-reduce:transform-none motion-reduce:transition-none"
+            src={project.imagePath}
+          />
         </div>
       )}
     </main>

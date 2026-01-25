@@ -70,14 +70,18 @@ export const Route = createFileRoute("/")({
 
 function HomePage() {
   const { contributions } = Route.useLoaderData();
+  const sectionClass = "section-enter motion-reduce:transform-none motion-reduce:transition-none";
 
   return (
-    <main>
+    <main className="page-enter">
       {/* Intro Section */}
-      <div className="flex items-center gap-6 border-y border-dashed p-8">
+      <div
+        className={`flex items-center gap-6 border-y border-dashed p-8 ${sectionClass}`}
+        style={{ animationDelay: "40ms" }}
+      >
         <img
           alt="Avatar"
-          className="size-20 shrink-0 rounded-full object-cover"
+          className="size-20 shrink-0 rounded-full object-cover transition-transform duration-200 ease-out hover:scale-[1.02] motion-reduce:transform-none motion-reduce:transition-none"
           height={80}
           src={RESUME.avatar_path}
           width={80}
@@ -89,7 +93,7 @@ function HomePage() {
       </div>
 
       {/* GitHub Recent Activity */}
-      <div className="p-8">
+      <div className={`p-8 ${sectionClass}`} style={{ animationDelay: "80ms" }}>
         <h2 className="text-lg">Recent GitHub Activity</h2>
         <div className="mt-4">
           <Contributions data={contributions} />
@@ -97,7 +101,10 @@ function HomePage() {
       </div>
 
       {/* About Me Section */}
-      <div className="border-t border-dashed p-8">
+      <div
+        className={`border-t border-dashed p-8 ${sectionClass}`}
+        style={{ animationDelay: "120ms" }}
+      >
         <h2 className="text-lg">About Me</h2>
         <div className="mt-2.5 space-y-3.5 opacity-80">
           <p>
@@ -130,11 +137,18 @@ function HomePage() {
       </div>
 
       {/* Experience Section */}
-      <div className="border-t border-dashed p-8">
+      <div
+        className={`border-t border-dashed p-8 ${sectionClass}`}
+        style={{ animationDelay: "160ms" }}
+      >
         <h2 className="text-xl">Experience</h2>
         <div className="mt-2.5 space-y-4">
-          {RESUME.experience.map((experience) => (
-            <div key={experience.company}>
+          {RESUME.experience.map((experience, index) => (
+            <div
+              className="item-enter motion-reduce:transform-none motion-reduce:transition-none"
+              key={experience.company}
+              style={{ animationDelay: `${200 + index * 40}ms` }}
+            >
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-3.5">
                   <Link
@@ -176,11 +190,18 @@ function HomePage() {
       </div>
 
       {/* Education Section */}
-      <div className="border-t border-dashed p-8">
+      <div
+        className={`border-t border-dashed p-8 ${sectionClass}`}
+        style={{ animationDelay: "200ms" }}
+      >
         <h2 className="text-xl">Education</h2>
         <div className="mt-2.5 space-y-4">
-          {RESUME.education.map((education) => (
-            <div key={education.institution}>
+          {RESUME.education.map((education, index) => (
+            <div
+              className="item-enter motion-reduce:transform-none motion-reduce:transition-none"
+              key={education.institution}
+              style={{ animationDelay: `${240 + index * 40}ms` }}
+            >
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-3.5">
                   <div>
@@ -203,14 +224,22 @@ function HomePage() {
       </div>
 
       {/* Projects Section */}
-      <div className="border-t border-dashed px-8 pt-8">
+      <div
+        className={`border-t border-dashed px-8 pt-8 ${sectionClass}`}
+        style={{ animationDelay: "240ms" }}
+      >
         <h2 className="text-xl">Projects</h2>
         <p className="mt-2.5 mb-6 opacity-80">
           Here are some of my notable projects that showcase my skills and interests:
         </p>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          {RESUME.projects.slice(0, 4).map((project) => (
-            <ProjectCard key={project.name} project={project} />
+          {RESUME.projects.slice(0, 4).map((project, index) => (
+            <ProjectCard
+              className="item-enter motion-reduce:transform-none motion-reduce:transition-none"
+              key={project.name}
+              project={project}
+              style={{ animationDelay: `${280 + index * 40}ms` }}
+            />
           ))}
         </div>
         <div className="mt-6 flex justify-center">

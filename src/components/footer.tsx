@@ -6,7 +6,12 @@ export default function Footer() {
       <p>Ajan Raj</p>
       <div className="flex items-center gap-1">
         <Button asChild size="sm" variant="ghost">
-          <a href="https://github.com/ajanraj" target="_blank" rel="noopener noreferrer">
+          <a
+            className="transition-transform duration-150 ease-out hover:-translate-y-0.5 hover:scale-[1.04] active:scale-[0.98] motion-reduce:transform-none motion-reduce:transition-none"
+            href="https://github.com/ajanraj"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
             <svg
               className="h-6 w-6"
               fill="currentColor"
@@ -19,7 +24,12 @@ export default function Footer() {
           </a>
         </Button>
         <Button asChild size="sm" variant="ghost">
-          <a href="https://x.com/ajanraj25" target="_blank" rel="noopener noreferrer">
+          <a
+            className="transition-transform duration-150 ease-out hover:-translate-y-0.5 hover:scale-[1.04] active:scale-[0.98] motion-reduce:transform-none motion-reduce:transition-none"
+            href="https://x.com/ajanraj25"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
             <svg
               className="h-6 w-6"
               fill="currentColor"
@@ -32,7 +42,12 @@ export default function Footer() {
           </a>
         </Button>
         <Button asChild size="sm" variant="ghost">
-          <a href="https://linkedin.com/in/ajanraj" target="_blank" rel="noopener noreferrer">
+          <a
+            className="transition-transform duration-150 ease-out hover:-translate-y-0.5 hover:scale-[1.04] active:scale-[0.98] motion-reduce:transform-none motion-reduce:transition-none"
+            href="https://linkedin.com/in/ajanraj"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
             <svg
               className="h-6 w-6"
               fill="currentColor"
