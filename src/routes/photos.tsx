@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion, type Transition } from "framer-motion";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
@@ -57,6 +57,11 @@ function PhotosPage() {
     },
   });
   const photos: Photo[] = useMemo(() => data?.photos || [], [data?.photos]);
+  const reduceMotion = useReducedMotion() ?? false;
+  const hoverTransition: Transition = {
+    duration: reduceMotion ? 0 : 0.15,
+    ease: [0.25, 0.1, 0.25, 1],
+  };
 
   const [carouselOpen, setCarouselOpen] = useState(false);
   const [carouselIndex, setCarouselIndex] = useState(0);
@@ -168,23 +173,46 @@ function PhotosPage() {
   }, [photos.length, startLoadingImage]);
 
   return (
-    <main className="page-enter border-t border-dashed px-8 pt-8">
-      <div className="mb-8 section-enter" style={{ animationDelay: "40ms" }}>
+    <motion.main
+      className="border-t border-dashed px-8 pt-8"
+      initial={reduceMotion ? false : { opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={reduceMotion ? { duration: 0 } : { duration: 0.32, ease: "easeOut" }}
+    >
+      <motion.div
+        className="mb-8"
+        initial={reduceMotion ? false : { opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={
+          reduceMotion ? { duration: 0 } : { duration: 0.28, ease: "easeOut", delay: 0.04 }
+        }
+      >
         <h1 className="page-heading font-medium text-3xl md:text-5xl tracking-tight">Photos</h1>
         <p className="mt-2 text-muted-foreground">
           A collection of photos I've taken over the years. I'm not a professional photographer, but
           I enjoy capturing moments.
         </p>
-      </div>
-      <p className="mb-8 text-sm opacity-80 section-enter" style={{ animationDelay: "80ms" }}>
+      </motion.div>
+      <motion.p
+        className="mb-8 text-sm opacity-80"
+        initial={reduceMotion ? false : { opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={
+          reduceMotion ? { duration: 0 } : { duration: 0.28, ease: "easeOut", delay: 0.08 }
+        }
+      >
         My photos are taken with an iPhone 12 Pro Max (Wide: 26mm f/1.6, Ultra Wide: 13mm f/2.4,
         Telephoto: 65mm f/2.2).
-      </p>
+      </motion.p>
 
       {/* Photo Grid */}
-      <div
-        className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 section-enter"
-        style={{ animationDelay: "120ms" }}
+      <motion.div
+        className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3"
+        initial={reduceMotion ? false : { opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={
+          reduceMotion ? { duration: 0 } : { duration: 0.28, ease: "easeOut", delay: 0.12 }
+        }
       >
         {isLoading || error
           ? Array.from({ length: 10 }, (_, i) => `skeleton-${i}`).map((key) => (
@@ -198,30 +226,46 @@ function PhotosPage() {
               return (
                 <motion.div
                   animate={{
-                    filter: status === "loaded" ? "blur(0px)" : "blur(8px)",
-                    opacity: status === "loaded" ? 1 : 0,
+                    filter: reduceMotion || status === "loaded" ? "blur(0px)" : "blur(8px)",
+                    opacity: reduceMotion ? 1 : status === "loaded" ? 1 : 0,
                   }}
                   className="relative aspect-square w-full overflow-hidden rounded-xl bg-muted hover:cursor-pointer"
                   data-index={i}
-                  initial={{ opacity: 0, y: 12, filter: "blur(8px)" }}
+                  initial={reduceMotion ? false : { opacity: 0, y: 12, filter: "blur(8px)" }}
                   key={photo.name}
                   onClick={() => {
                     setCarouselOpen(true);
                     setCarouselIndex(i);
                   }}
                   transition={{
-                    duration: 0.35,
+                    duration: reduceMotion ? 0 : 0.35,
                     ease: "easeOut",
-                    filter: { duration: 0.35, ease: "easeOut" },
-                    delay: i * 0.04, // Stagger each photo individually
+                    filter: { duration: reduceMotion ? 0 : 0.35, ease: "easeOut" },
+                    delay: reduceMotion ? 0 : i * 0.04, // Stagger each photo individually
                   }}
                 >
                   {status !== "loaded" && (
-                    <div className="absolute inset-0 flex animate-pulse items-center justify-center bg-muted">
+                    <motion.div
+                      animate={reduceMotion ? { opacity: 1 } : { opacity: [0.6, 1, 0.6] }}
+                      className="absolute inset-0 flex items-center justify-center bg-muted"
+                      transition={
+                        reduceMotion
+                          ? { duration: 0 }
+                          : { duration: 1.2, ease: "easeInOut", repeat: Infinity }
+                      }
+                    >
                       {status === "loading" && (
-                        <div className="h-7 w-7 animate-spin rounded-full border-2 border-muted-foreground/20 border-t-muted-foreground/60" />
+                        <motion.div
+                          animate={reduceMotion ? { rotate: 0 } : { rotate: 360 }}
+                          className="h-7 w-7 rounded-full border-2 border-muted-foreground/20 border-t-muted-foreground/60"
+                          transition={
+                            reduceMotion
+                              ? { duration: 0 }
+                              : { duration: 1, ease: "linear", repeat: Infinity }
+                          }
+                        />
                       )}
-                    </div>
+                    </motion.div>
                   )}
                   <img
                     alt={`Gallery item ${i + 1}`}
@@ -241,7 +285,7 @@ function PhotosPage() {
                 </motion.div>
               );
             })}
-      </div>
+      </motion.div>
 
       <p className="mt-8 text-xs text-muted-foreground">
         © {new Date().getFullYear()} Ajan Raj. All photos are my original work and may not be used,
@@ -254,51 +298,63 @@ function PhotosPage() {
             animate={{ opacity: 1 }}
             className="fixed inset-0 z-50"
             exit={{ opacity: 0 }}
-            initial={{ opacity: 0 }}
-            transition={{ duration: 0.2, ease: "easeOut" }}
+            initial={reduceMotion ? false : { opacity: 0 }}
+            transition={reduceMotion ? { duration: 0 } : { duration: 0.2, ease: "easeOut" }}
           >
             {/* Background overlay */}
             <motion.div
               animate={{ opacity: 1 }}
               className="absolute inset-0 bg-black/75 backdrop-blur-md"
               exit={{ opacity: 0 }}
-              initial={{ opacity: 0 }}
+              initial={reduceMotion ? false : { opacity: 0 }}
               onClick={() => setCarouselOpen(false)}
-              transition={{ duration: 0.2, ease: "easeOut" }}
+              transition={reduceMotion ? { duration: 0 } : { duration: 0.2, ease: "easeOut" }}
             />
 
             {/* Top controls */}
             <div className="fixed top-4 right-4 z-[60] flex gap-2">
-              <Button
-                aria-label="Close carousel"
-                className="flex h-6 justify-between gap-1 rounded-full border p-2 transition-transform duration-150 ease-out hover:scale-[1.02] active:scale-[0.98] motion-reduce:transform-none motion-reduce:transition-none"
-                onClick={() => setCarouselOpen(false)}
-                variant="ghost"
+              <motion.div
+                transition={hoverTransition}
+                whileHover={reduceMotion ? undefined : { scale: 1.02 }}
+                whileTap={reduceMotion ? undefined : { scale: 0.98 }}
               >
-                <X />
-                Close
-              </Button>
+                <Button
+                  aria-label="Close carousel"
+                  className="flex h-6 justify-between gap-1 rounded-full border p-2"
+                  onClick={() => setCarouselOpen(false)}
+                  variant="ghost"
+                >
+                  <X />
+                  Close
+                </Button>
+              </motion.div>
             </div>
 
             {/* Previous button */}
-            <button
+            <motion.button
               aria-label="Previous photo"
-              className="-translate-y-1/2 fixed top-1/2 left-4 z-[60] cursor-pointer text-muted-foreground transition-all duration-150 ease-out hover:text-foreground hover:scale-[1.06] active:scale-[0.98] motion-reduce:transform-none motion-reduce:transition-none"
+              className="-translate-y-1/2 fixed top-1/2 left-4 z-[60] cursor-pointer text-muted-foreground hover:text-foreground"
               onClick={navigatePrevious}
               type="button"
+              transition={hoverTransition}
+              whileHover={reduceMotion ? undefined : { scale: 1.06 }}
+              whileTap={reduceMotion ? undefined : { scale: 0.98 }}
             >
               <ChevronLeft size={24} />
-            </button>
+            </motion.button>
 
             {/* Next button */}
-            <button
+            <motion.button
               aria-label="Next photo"
-              className="-translate-y-1/2 fixed top-1/2 right-4 z-[60] cursor-pointer text-muted-foreground transition-all duration-150 ease-out hover:text-foreground hover:scale-[1.06] active:scale-[0.98] motion-reduce:transform-none motion-reduce:transition-none"
+              className="-translate-y-1/2 fixed top-1/2 right-4 z-[60] cursor-pointer text-muted-foreground hover:text-foreground"
               onClick={navigateNext}
               type="button"
+              transition={hoverTransition}
+              whileHover={reduceMotion ? undefined : { scale: 1.06 }}
+              whileTap={reduceMotion ? undefined : { scale: 0.98 }}
             >
               <ChevronRight size={24} />
-            </button>
+            </motion.button>
 
             {/* Image container */}
             <div className="pointer-events-none absolute inset-0 z-[55] flex items-center justify-center">
@@ -322,33 +378,43 @@ function PhotosPage() {
                         scale: isActive ? 1 : 0.98,
                       }}
                       className={`absolute ${isActive ? "z-10" : "z-0"}`}
-                      initial={{ opacity: 0, scale: 0.98 }}
+                      initial={reduceMotion ? false : { opacity: 0, scale: 0.98 }}
                       key={`${photo.fullSize}-${actualIndex}`}
-                      transition={{ duration: 0.24, ease: "easeOut" }}
+                      transition={
+                        reduceMotion ? { duration: 0 } : { duration: 0.24, ease: "easeOut" }
+                      }
                     >
                       {isActive && status !== "loaded" && (
                         <motion.div
                           animate={{ opacity: 1 }}
                           className="flex h-[80vh] w-[90vw] items-center justify-center rounded-lg bg-black/50"
                           exit={{ opacity: 0 }}
-                          initial={{ opacity: 0 }}
+                          initial={reduceMotion ? false : { opacity: 0 }}
                         >
                           {status === "loading" && (
-                            <div className="h-12 w-12 animate-spin rounded-full border-2 border-white/20 border-t-white/60" />
+                            <motion.div
+                              animate={reduceMotion ? { rotate: 0 } : { rotate: 360 }}
+                              className="h-12 w-12 rounded-full border-2 border-white/20 border-t-white/60"
+                              transition={
+                                reduceMotion
+                                  ? { duration: 0 }
+                                  : { duration: 1, ease: "linear", repeat: Infinity }
+                              }
+                            />
                           )}
                         </motion.div>
                       )}
                       <motion.img
                         alt={`Item ${actualIndex + 1} of ${photos.length}`}
                         animate={{
-                          filter: status === "loaded" ? "blur(0px)" : "blur(12px)",
-                          opacity: status === "loaded" ? 1 : 0,
+                          filter: reduceMotion || status === "loaded" ? "blur(0px)" : "blur(12px)",
+                          opacity: reduceMotion ? 1 : status === "loaded" ? 1 : 0,
                         }}
                         className="pointer-events-none h-auto max-h-[80vh] w-auto max-w-[90vw] rounded-lg object-contain select-none"
                         draggable={false}
                         onContextMenu={(e) => e.preventDefault()}
                         height={1080}
-                        initial={{ filter: "blur(12px)", opacity: 0 }}
+                        initial={reduceMotion ? false : { filter: "blur(12px)", opacity: 0 }}
                         onError={() => {
                           setImageStatuses((prev) => new Map(prev).set(statusKey, "error"));
                         }}
@@ -357,8 +423,8 @@ function PhotosPage() {
                         }}
                         src={photo.fullSize}
                         transition={{
-                          filter: { duration: 0.25, ease: "easeOut" },
-                          opacity: { duration: 0.15, ease: "easeOut" },
+                          filter: { duration: reduceMotion ? 0 : 0.25, ease: "easeOut" },
+                          opacity: { duration: reduceMotion ? 0 : 0.15, ease: "easeOut" },
                         }}
                         width={1920}
                       />
@@ -374,6 +440,6 @@ function PhotosPage() {
           </motion.div>
         )}
       </AnimatePresence>
-    </main>
+    </motion.main>
   );
 }

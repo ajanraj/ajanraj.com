@@ -1,4 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { motion, useReducedMotion, type Transition } from "framer-motion";
+import { enterMotion } from "@/components/motion/enter";
 import { allPosts } from "content-collections";
 
 type PostMetadata = {
@@ -55,14 +57,22 @@ export const Route = createFileRoute("/writing/")({
 
 function WritingPage() {
   const posts = Route.useLoaderData();
+  const reduceMotion = useReducedMotion() ?? false;
+  const pageMotion = enterMotion({ reduceMotion, y: 12, duration: 0.32 });
+  const sectionMotion = (delay = 0) => enterMotion({ reduceMotion, y: 10, duration: 0.28, delay });
+  const itemMotion = (delay = 0) => enterMotion({ reduceMotion, y: 8, duration: 0.22, delay });
+  const hoverTransition: Transition = {
+    duration: reduceMotion ? 0 : 0.15,
+    ease: [0.25, 0.1, 0.25, 1],
+  };
 
   return (
-    <main className="page-enter border-t border-dashed px-8 pt-8">
-      <div className="section-enter" style={{ animationDelay: "40ms" }}>
+    <motion.main className="border-t border-dashed px-8 pt-8" {...pageMotion}>
+      <motion.div {...sectionMotion(0.04)}>
         <h1 className="page-heading font-medium text-3xl md:text-5xl tracking-tight">Writing</h1>
         <p className="mt-2 text-muted-foreground">Some of my notes and thoughts.</p>
-      </div>
-      <table className="mt-8 w-full section-enter" style={{ animationDelay: "80ms" }}>
+      </motion.div>
+      <motion.table className="mt-8 w-full" {...sectionMotion(0.08)}>
         <thead>
           <tr className="border-border border-b">
             <th className="w-16 px-0 py-2 text-left font-normal text-muted-foreground/65 text-sm">
@@ -78,10 +88,13 @@ function WritingPage() {
         </thead>
         <tbody className="divide-y divide-border">
           {posts.map((post, index) => (
-            <tr
-              className="group item-enter transition-colors hover:bg-muted/50"
+            <motion.tr
+              className="group hover:bg-muted/50"
               key={post.slug}
-              style={{ animationDelay: `${120 + index * 30}ms` }}
+              {...itemMotion(0.12 + index * 0.03)}
+              animate="rest"
+              initial="rest"
+              whileHover="hover"
             >
               <td className="whitespace-nowrap p-0 font-mono text-muted-foreground text-sm">
                 <Link to="/writing/$slug" params={{ slug: post.slug }} className="block px-0 py-3">
@@ -89,27 +102,31 @@ function WritingPage() {
                 </Link>
               </td>
               <td className="p-0">
-                <Link
-                  className="block px-6 py-3 transition-transform duration-150 ease-out group-hover:translate-x-1 motion-reduce:transform-none motion-reduce:transition-none"
-                  params={{ slug: post.slug }}
-                  to="/writing/$slug"
-                >
-                  <span className="line-clamp-1">{post.title}</span>
+                <Link className="block px-6 py-3" params={{ slug: post.slug }} to="/writing/$slug">
+                  <motion.span
+                    className="line-clamp-1"
+                    transition={hoverTransition}
+                    variants={{ rest: { x: 0 }, hover: { x: 4 } }}
+                  >
+                    {post.title}
+                  </motion.span>
                 </Link>
               </td>
               <td className="hidden p-0 text-muted-foreground text-sm md:table-cell">
-                <Link
-                  className="block px-4 py-3 transition-transform duration-150 ease-out group-hover:translate-x-1 motion-reduce:transform-none motion-reduce:transition-none"
-                  params={{ slug: post.slug }}
-                  to="/writing/$slug"
-                >
-                  <span className="line-clamp-1">{post.summary}</span>
+                <Link className="block px-4 py-3" params={{ slug: post.slug }} to="/writing/$slug">
+                  <motion.span
+                    className="line-clamp-1"
+                    transition={hoverTransition}
+                    variants={{ rest: { x: 0 }, hover: { x: 4 } }}
+                  >
+                    {post.summary}
+                  </motion.span>
                 </Link>
               </td>
-            </tr>
+            </motion.tr>
           ))}
         </tbody>
-      </table>
-    </main>
+      </motion.table>
+    </motion.main>
   );
 }

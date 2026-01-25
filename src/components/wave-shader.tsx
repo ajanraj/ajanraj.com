@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useCallback } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 
 interface WaveShaderProps {
   fadeTop?: boolean;
@@ -187,6 +188,7 @@ export default function WaveShader({
   intensity = 1,
 }: WaveShaderProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const reduceMotion = useReducedMotion() ?? false;
   const animationRef = useRef<number>(0);
   const reduceMotionRef = useRef(false);
   const effectRef = useRef<{
@@ -208,8 +210,6 @@ export default function WaveShader({
   const startTimeRef = useRef(performance.now());
   const lastFrameTimeRef = useRef(0);
   const isVisibleRef = useRef(true);
-
-  const FRAME_INTERVAL = 33;
 
   const initWebGL = useCallback(() => {
     const canvas = canvasRef.current;
@@ -318,18 +318,15 @@ export default function WaveShader({
         return;
       }
 
-      if (!reduceMotionRef.current && timestamp - lastFrameTimeRef.current < FRAME_INTERVAL) {
-        return;
-      }
-      lastFrameTimeRef.current = timestamp;
-
       const effect = effectRef.current;
       const { gl, resolutionLoc, timeLoc, isDarkLoc, dprLoc, hoverLoc, scrollLoc, intensityLoc } =
         effect;
-      const elapsed = (performance.now() - startTimeRef.current) / 1000.0;
+      const elapsed = (timestamp - startTimeRef.current) / 1000.0;
       const isDark = getIsDark();
       const effectiveDpr = getEffectiveDpr();
-      const deltaTime = FRAME_INTERVAL / 1000.0;
+      const deltaTime =
+        lastFrameTimeRef.current > 0 ? (timestamp - lastFrameTimeRef.current) / 1000.0 : 0;
+      lastFrameTimeRef.current = timestamp;
 
       if (effect.needsResize && canvas) {
         canvas.width = canvas.offsetWidth * effectiveDpr;
@@ -414,8 +411,13 @@ export default function WaveShader({
   }, [initWebGL, intensity]);
 
   return (
-    <div className={`wave-enter relative w-full overflow-hidden ${className}`}>
+    <motion.div
+      className={`relative w-full overflow-hidden ${className}`}
+      initial={reduceMotion ? false : { opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={reduceMotion ? { duration: 0 } : { duration: 0.26, ease: "easeOut" }}
+    >
       <canvas ref={canvasRef} className="block h-full w-full" />
-    </div>
+    </motion.div>
   );
 }

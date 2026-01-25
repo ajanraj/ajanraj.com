@@ -3,11 +3,13 @@ import { createServerFn } from "@tanstack/react-start";
 import { endOfWeek, startOfDay, subDays } from "date-fns";
 import { ChevronRight } from "lucide-react";
 import { Link } from "@tanstack/react-router";
+import { motion, useReducedMotion, type Transition } from "framer-motion";
 import { Contributions } from "@/components/contributions";
 import ProjectCard from "@/components/project-card";
 import { Button } from "@/components/ui/button";
 import type { Activity } from "@/components/ui/kibo-ui/contribution-graph";
 import RESUME from "@/data/resume";
+import { enterMotion } from "@/components/motion/enter";
 
 const username = "ajanraj";
 
@@ -70,41 +72,47 @@ export const Route = createFileRoute("/")({
 
 function HomePage() {
   const { contributions } = Route.useLoaderData();
-  const sectionClass = "section-enter motion-reduce:transform-none motion-reduce:transition-none";
+  const reduceMotion = useReducedMotion() ?? false;
+  const pageMotion = enterMotion({ reduceMotion, y: 12, duration: 0.32 });
+  const sectionMotion = (delay = 0) => enterMotion({ reduceMotion, y: 10, duration: 0.28, delay });
+  const itemMotion = (delay = 0) => enterMotion({ reduceMotion, y: 8, duration: 0.22, delay });
+  const hoverTransition: Transition = {
+    duration: reduceMotion ? 0 : 0.15,
+    ease: [0.25, 0.1, 0.25, 1],
+  };
 
   return (
-    <main className="page-enter">
+    <motion.main {...pageMotion}>
       {/* Intro Section */}
-      <div
-        className={`flex items-center gap-6 border-y border-dashed p-8 ${sectionClass}`}
-        style={{ animationDelay: "40ms" }}
+      <motion.div
+        className="flex items-center gap-6 border-y border-dashed p-8"
+        {...sectionMotion(0.04)}
       >
-        <img
+        <motion.img
           alt="Avatar"
-          className="size-20 shrink-0 rounded-full object-cover transition-transform duration-200 ease-out hover:scale-[1.02] motion-reduce:transform-none motion-reduce:transition-none"
+          className="size-20 shrink-0 rounded-full object-cover"
           height={80}
           src={RESUME.avatar_path}
           width={80}
+          transition={hoverTransition}
+          whileHover={reduceMotion ? undefined : { scale: 1.02 }}
         />
         <div>
           <h1 className="page-heading text-4xl md:text-5xl tracking-tight">{RESUME.name}</h1>
           <p className="mt-1 md:text-lg opacity-80 text-sm">{RESUME.bio.intro}</p>
         </div>
-      </div>
+      </motion.div>
 
       {/* GitHub Recent Activity */}
-      <div className={`p-8 ${sectionClass}`} style={{ animationDelay: "80ms" }}>
+      <motion.div className="p-8" {...sectionMotion(0.08)}>
         <h2 className="text-lg">Recent GitHub Activity</h2>
         <div className="mt-4">
           <Contributions data={contributions} />
         </div>
-      </div>
+      </motion.div>
 
       {/* About Me Section */}
-      <div
-        className={`border-t border-dashed p-8 ${sectionClass}`}
-        style={{ animationDelay: "120ms" }}
-      >
+      <motion.div className="border-t border-dashed p-8" {...sectionMotion(0.12)}>
         <h2 className="text-lg">About Me</h2>
         <div className="mt-2.5 space-y-3.5 opacity-80">
           <p>
@@ -134,21 +142,14 @@ function HomePage() {
             my parents, and I carry that gratitude with me in everything I do.
           </p>
         </div>
-      </div>
+      </motion.div>
 
       {/* Experience Section */}
-      <div
-        className={`border-t border-dashed p-8 ${sectionClass}`}
-        style={{ animationDelay: "160ms" }}
-      >
+      <motion.div className="border-t border-dashed p-8" {...sectionMotion(0.16)}>
         <h2 className="text-xl">Experience</h2>
         <div className="mt-2.5 space-y-4">
           {RESUME.experience.map((experience, index) => (
-            <div
-              className="item-enter motion-reduce:transform-none motion-reduce:transition-none"
-              key={experience.company}
-              style={{ animationDelay: `${200 + index * 40}ms` }}
-            >
+            <motion.div key={experience.company} {...itemMotion(0.2 + index * 0.04)}>
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-3.5">
                   <Link
@@ -184,24 +185,17 @@ function HomePage() {
                   <p className="mt-0.5 text-muted-foreground">{experience.location}</p>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
-      </div>
+      </motion.div>
 
       {/* Education Section */}
-      <div
-        className={`border-t border-dashed p-8 ${sectionClass}`}
-        style={{ animationDelay: "200ms" }}
-      >
+      <motion.div className="border-t border-dashed p-8" {...sectionMotion(0.2)}>
         <h2 className="text-xl">Education</h2>
         <div className="mt-2.5 space-y-4">
           {RESUME.education.map((education, index) => (
-            <div
-              className="item-enter motion-reduce:transform-none motion-reduce:transition-none"
-              key={education.institution}
-              style={{ animationDelay: `${240 + index * 40}ms` }}
-            >
+            <motion.div key={education.institution} {...itemMotion(0.24 + index * 0.04)}>
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-3.5">
                   <div>
@@ -218,28 +212,22 @@ function HomePage() {
                   <p className="mt-0.5 text-muted-foreground">{education.location}</p>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
-      </div>
+      </motion.div>
 
       {/* Projects Section */}
-      <div
-        className={`border-t border-dashed px-8 pt-8 ${sectionClass}`}
-        style={{ animationDelay: "240ms" }}
-      >
+      <motion.div className="border-t border-dashed px-8 pt-8" {...sectionMotion(0.24)}>
         <h2 className="text-xl">Projects</h2>
         <p className="mt-2.5 mb-6 opacity-80">
           Here are some of my notable projects that showcase my skills and interests:
         </p>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           {RESUME.projects.slice(0, 4).map((project, index) => (
-            <ProjectCard
-              className="item-enter motion-reduce:transform-none motion-reduce:transition-none"
-              key={project.name}
-              project={project}
-              style={{ animationDelay: `${280 + index * 40}ms` }}
-            />
+            <motion.div key={project.name} {...itemMotion(0.28 + index * 0.04)}>
+              <ProjectCard project={project} />
+            </motion.div>
           ))}
         </div>
         <div className="mt-6 flex justify-center">
@@ -249,7 +237,7 @@ function HomePage() {
             </Link>
           </Button>
         </div>
-      </div>
-    </main>
+      </motion.div>
+    </motion.main>
   );
 }

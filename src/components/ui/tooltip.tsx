@@ -2,6 +2,7 @@
 
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 import type * as React from "react";
+import { motion, useReducedMotion, type Transition } from "framer-motion";
 
 import { cn } from "@/lib/utils";
 
@@ -32,23 +33,34 @@ function TooltipTrigger({ ...props }: React.ComponentProps<typeof TooltipPrimiti
 
 function TooltipContent({
   className,
-  sideOffset = 0,
+  sideOffset = 4,
   children,
   ...props
 }: React.ComponentProps<typeof TooltipPrimitive.Content>) {
+  const reduceMotion = useReducedMotion() ?? false;
+  const transition: Transition = reduceMotion
+    ? { duration: 0 }
+    : { duration: 0.15, ease: "easeOut" };
   return (
     <TooltipPrimitive.Portal>
       <TooltipPrimitive.Content
-        className={cn(
-          "fade-in-0 zoom-in-95 data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 w-fit origin-(--radix-tooltip-content-transform-origin) animate-in text-balance rounded-md bg-primary px-3 py-1.5 text-primary-foreground text-xs duration-150 ease-out data-[state=closed]:animate-out motion-reduce:animate-none motion-reduce:transition-none",
-          className,
-        )}
+        asChild
         data-slot="tooltip-content"
         sideOffset={sideOffset}
         {...props}
       >
-        {children}
-        <TooltipPrimitive.Arrow className="z-50 size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px] bg-background fill-background" />
+        <motion.div
+          className={cn(
+            "z-50 w-fit origin-(--radix-tooltip-content-transform-origin) rounded-md bg-muted/80 px-3 py-1.5 text-foreground text-xs shadow-md",
+            className,
+          )}
+          initial={reduceMotion ? false : { opacity: 0, scale: 0.95, y: 4 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={transition}
+        >
+          {children}
+          <TooltipPrimitive.Arrow className="z-50 size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px] bg-muted/80 fill-muted/80" />
+        </motion.div>
       </TooltipPrimitive.Content>
     </TooltipPrimitive.Portal>
   );

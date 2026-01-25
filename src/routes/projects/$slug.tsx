@@ -1,8 +1,10 @@
 import { createFileRoute, notFound, Link } from "@tanstack/react-router";
 import { ExternalLink, Github } from "lucide-react";
+import { motion, useReducedMotion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import RESUME from "@/data/resume";
+import { enterMotion } from "@/components/motion/enter";
 
 export const Route = createFileRoute("/projects/$slug")({
   loader: ({ params }) => {
@@ -39,10 +41,13 @@ export const Route = createFileRoute("/projects/$slug")({
 
 function ProjectPage() {
   const project = Route.useLoaderData();
+  const reduceMotion = useReducedMotion() ?? false;
+  const pageMotion = enterMotion({ reduceMotion, y: 12, duration: 0.32 });
+  const sectionMotion = (delay = 0) => enterMotion({ reduceMotion, y: 10, duration: 0.28, delay });
 
   return (
-    <main className="page-enter border-t border-dashed px-8 pt-8">
-      <div className="mb-8 section-enter" style={{ animationDelay: "40ms" }}>
+    <motion.main className="border-t border-dashed px-8 pt-8" {...pageMotion}>
+      <motion.div className="mb-8" {...sectionMotion(0.04)}>
         <div className="flex items-start justify-between">
           <div>
             <h1 className="page-heading font-medium text-3xl md:text-5xl tracking-tight">
@@ -79,20 +84,13 @@ function ProjectPage() {
             </Button>
           )}
         </div>
-      </div>
+      </motion.div>
 
       {project.imagePath && (
-        <div
-          className="mt-8 overflow-hidden rounded-xl border section-enter"
-          style={{ animationDelay: "120ms" }}
-        >
-          <img
-            alt={`${project.name} screenshot`}
-            className="w-full transition-transform duration-300 ease-out motion-reduce:transform-none motion-reduce:transition-none"
-            src={project.imagePath}
-          />
-        </div>
+        <motion.div className="mt-8 overflow-hidden rounded-xl border" {...sectionMotion(0.12)}>
+          <img alt={`${project.name} screenshot`} className="w-full" src={project.imagePath} />
+        </motion.div>
       )}
-    </main>
+    </motion.main>
   );
 }

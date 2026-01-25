@@ -1,7 +1,9 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
+import { motion, useReducedMotion } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import { Markdown } from "@/components/Markdown";
 import { allPosts } from "content-collections";
+import { enterMotion } from "@/components/motion/enter";
 
 const postsMetadata = allPosts.reduce(
   (acc, post) => {
@@ -68,20 +70,24 @@ export const Route = createFileRoute("/writing/$slug")({
 function WritingPost() {
   const metadata = Route.useLoaderData();
   const formattedDate = formatDate(metadata.publishedAt);
+  const reduceMotion = useReducedMotion() ?? false;
+  const pageMotion = enterMotion({ reduceMotion, y: 12, duration: 0.32 });
+  const sectionMotion = (delay = 0) => enterMotion({ reduceMotion, y: 10, duration: 0.28, delay });
+  const itemMotion = (delay = 0) => enterMotion({ reduceMotion, y: 8, duration: 0.22, delay });
 
   return (
-    <main className="page-enter border-t border-dashed px-8 pt-8">
+    <motion.main className="border-t border-dashed px-8 pt-8" {...pageMotion}>
       <div className="relative">
         <article>
-          <header className="mb-8 section-enter" style={{ animationDelay: "40ms" }}>
+          <motion.header className="mb-8" {...sectionMotion(0.04)}>
             {metadata.coverImage && (
-              <div className="mb-6 section-enter" style={{ animationDelay: "80ms" }}>
+              <motion.div className="mb-6" {...sectionMotion(0.08)}>
                 <img
                   alt={`Cover image for ${metadata.title}`}
-                  className="rounded-lg transition-transform duration-300 ease-out motion-reduce:transform-none motion-reduce:transition-none"
+                  className="rounded-lg"
                   src={metadata.coverImage}
                 />
-              </div>
+              </motion.div>
             )}
             <h1 className="page-heading mb-2 font-bold text-2xl md:text-4xl">{metadata.title}</h1>
             {metadata.excerpt && (
@@ -97,24 +103,18 @@ function WritingPost() {
             {metadata.tags && metadata.tags.length > 0 && (
               <div className="mt-4 flex flex-wrap gap-2">
                 {metadata.tags.map((tag: string, index: number) => (
-                  <div
-                    className="item-enter motion-reduce:transform-none motion-reduce:transition-none"
-                    key={tag}
-                    style={{ animationDelay: `${120 + index * 40}ms` }}
-                  >
+                  <motion.div key={tag} {...itemMotion(0.12 + index * 0.04)}>
                     <Badge>{tag}</Badge>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
             )}
-          </header>
-          <Markdown
-            className="prose prose-invert max-w-none section-enter"
-            content={metadata.content}
-            style={{ animationDelay: "120ms" }}
-          />
+          </motion.header>
+          <motion.div {...sectionMotion(0.12)}>
+            <Markdown className="prose prose-invert max-w-none" content={metadata.content} />
+          </motion.div>
         </article>
       </div>
-    </main>
+    </motion.main>
   );
 }

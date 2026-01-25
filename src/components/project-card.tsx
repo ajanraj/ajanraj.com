@@ -3,6 +3,7 @@
 import { Image as ImageIcon } from "lucide-react";
 import type { CSSProperties } from "react";
 import { Link } from "@tanstack/react-router";
+import { motion, useReducedMotion, type Transition } from "framer-motion";
 import { Badge } from "./ui/badge";
 import { cn } from "@/lib/utils";
 
@@ -27,30 +28,62 @@ export default function ProjectCard({
   className?: string;
   style?: CSSProperties;
 }) {
+  const reduceMotion = useReducedMotion() ?? false;
+  const hoverTransition: Transition = {
+    duration: reduceMotion ? 0 : 0.2,
+    ease: [0.25, 0.1, 0.25, 1],
+  };
+  const imageTransition: Transition = reduceMotion
+    ? { duration: 0 }
+    : { duration: 0.3, ease: "easeOut" };
   return (
     <Link
-      className={cn(
-        "group cursor-pointer overflow-hidden rounded-xl border shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-muted/50 hover:shadow-md motion-reduce:transform-none motion-reduce:transition-none",
-        className,
-      )}
+      className={cn("group block h-full cursor-pointer", className)}
       to="/projects/$slug"
       params={{ slug: project.slug }}
       style={style}
     >
-      <div className="p-4">
-        <div className="h-48 w-full overflow-hidden rounded-lg brightness-65 transition-all duration-200 group-hover:brightness-100">
+      <motion.div
+        animate="rest"
+        className="h-full rounded-xl border bg-card p-4 shadow-sm transition-colors hover:bg-muted/50"
+        initial="rest"
+        transition={hoverTransition}
+        variants={{
+          rest: { boxShadow: "0 1px 2px rgba(0,0,0,0.04)" },
+          hover: { boxShadow: "0 8px 20px rgba(0,0,0,0.08)" },
+        }}
+        whileHover="hover"
+      >
+        <motion.div
+          className="h-48 w-full overflow-hidden rounded-lg"
+          transition={hoverTransition}
+          variants={{
+            rest: { filter: "brightness(0.65)" },
+            hover: { filter: "brightness(1)" },
+          }}
+        >
           {project.imagePath ? (
-            <img
+            <motion.img
               alt={`${project.name} screenshot`}
-              className="h-full w-full object-cover object-top transition-transform duration-300 ease-out group-hover:scale-[1.03] motion-reduce:transform-none motion-reduce:transition-none"
+              className="h-full w-full object-cover object-top"
               src={project.imagePath}
+              transition={imageTransition}
+              variants={{
+                rest: { scale: 1 },
+                hover: { scale: 1.03 },
+              }}
             />
           ) : (
             <div className="flex h-48 w-full items-center justify-center bg-muted">
-              <ImageIcon className="h-10 w-10 text-muted-foreground transition-transform duration-300 ease-out group-hover:scale-105 motion-reduce:transform-none motion-reduce:transition-none" />
+              <motion.div
+                transition={imageTransition}
+                variants={{ rest: { scale: 1 }, hover: { scale: 1.05 } }}
+              >
+                <ImageIcon className="h-10 w-10 text-muted-foreground" />
+              </motion.div>
             </div>
           )}
-        </div>
+        </motion.div>
         <div>
           <div className="mt-4 flex items-center justify-between">
             <h3 className="text-lg">{project.name}</h3>
@@ -58,7 +91,7 @@ export default function ProjectCard({
           </div>
           <p className="mt-2 flex-grow text-muted-foreground text-sm">{project.description}</p>
         </div>
-      </div>
+      </motion.div>
     </Link>
   );
 }

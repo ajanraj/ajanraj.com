@@ -1,4 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { motion, useReducedMotion } from "framer-motion";
+import { enterMotion } from "@/components/motion/enter";
 
 const quotes = [
   {
@@ -81,10 +83,14 @@ function QuotesPage() {
   const sortedQuotes = quotes.sort(
     (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
   );
+  const reduceMotion = useReducedMotion() ?? false;
+  const pageMotion = enterMotion({ reduceMotion, y: 12, duration: 0.32 });
+  const sectionMotion = (delay = 0) => enterMotion({ reduceMotion, y: 10, duration: 0.28, delay });
+  const itemMotion = (delay = 0) => enterMotion({ reduceMotion, y: 8, duration: 0.22, delay });
 
   return (
-    <main className="page-enter border-t border-dashed px-8 pt-8">
-      <div className="relative section-enter" style={{ animationDelay: "40ms" }}>
+    <motion.main className="border-t border-dashed px-8 pt-8" {...pageMotion}>
+      <motion.div className="relative" {...sectionMotion(0.04)}>
         <svg
           aria-label="Quote marks decoration"
           className="-z-10 -top-8 -left-10 absolute h-14 w-14 text-muted"
@@ -103,19 +109,15 @@ function QuotesPage() {
         <p className="mt-2 text-muted-foreground">
           Some quotes that I find interesting or inspiring.
         </p>
-      </div>
+      </motion.div>
       <ul className="mt-10 space-y-8">
         {sortedQuotes.map((quote, index) => (
-          <li
-            className="item-enter font-serif"
-            key={quote.text}
-            style={{ animationDelay: `${100 + index * 40}ms` }}
-          >
+          <motion.li className="font-serif" key={quote.text} {...itemMotion(0.1 + index * 0.04)}>
             <blockquote className="italic">{quote.text}</blockquote>
             <p className="mt-1 text-muted-foreground">—{quote.author}</p>
-          </li>
+          </motion.li>
         ))}
       </ul>
-    </main>
+    </motion.main>
   );
 }

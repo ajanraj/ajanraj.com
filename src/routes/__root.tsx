@@ -1,4 +1,6 @@
 import { HeadContent, Outlet, Scripts, createRootRouteWithContext } from "@tanstack/react-router";
+import { motion, useReducedMotion } from "framer-motion";
+import { enterMotion } from "@/components/motion/enter";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import { TanStackDevtools } from "@tanstack/react-devtools";
 
@@ -17,12 +19,19 @@ interface MyRouterContext {
 }
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
-  notFoundComponent: () => (
-    <main className="page-enter flex min-h-[60vh] flex-col items-center justify-center px-8">
-      <h1 className="text-4xl font-bold">404</h1>
-      <p className="mt-2 text-muted-foreground">Page not found</p>
-    </main>
-  ),
+  notFoundComponent: () => {
+    const reduceMotion = useReducedMotion() ?? false;
+    const pageMotion = enterMotion({ reduceMotion, y: 12, duration: 0.32 });
+    return (
+      <motion.main
+        className="flex min-h-[60vh] flex-col items-center justify-center px-8"
+        {...pageMotion}
+      >
+        <h1 className="text-4xl font-bold">404</h1>
+        <p className="mt-2 text-muted-foreground">Page not found</p>
+      </motion.main>
+    );
+  },
   head: () => ({
     meta: [
       { charSet: "utf-8" },
