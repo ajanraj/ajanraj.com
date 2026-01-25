@@ -31,7 +31,7 @@ const RESUME = {
       start_date: "2026-01-01",
       end_date: "Present",
       location: "London, UK",
-      company_website: "https://stripepartners.com",
+      company_website: "https://stripepartners.com?utm_source=ajanraj.com",
     },
     {
       icon: (
@@ -58,7 +58,7 @@ const RESUME = {
       start_date: "2025-09-01",
       end_date: "2025-12-31",
       location: "London, UK",
-      company_website: "https://stripepartners.com",
+      company_website: "https://stripepartners.com?utm_source=ajanraj.com",
     },
     {
       icon: (
@@ -82,7 +82,7 @@ const RESUME = {
       start_date: "2025-07-01",
       end_date: "2025-08-31",
       location: "Remote",
-      company_website: "https://emergent.sh",
+      company_website: "https://emergent.sh?utm_source=ajanraj.com",
     },
     {
       icon: (
@@ -109,7 +109,7 @@ const RESUME = {
       start_date: "2025-02-21",
       end_date: "2025-06-21",
       location: "London, UK",
-      company_website: "https://stripepartners.com",
+      company_website: "https://stripepartners.com?utm_source=ajanraj.com",
     },
   ],
   education: [

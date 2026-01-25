@@ -5,6 +5,7 @@ import { useEffect, useRef, useCallback } from "react";
 interface WaveShaderProps {
   fadeTop?: boolean;
   className?: string;
+  intensity?: number;
 }
 
 const vsSource = `
@@ -24,6 +25,8 @@ const fsSource = `
   uniform float u_fadeTop;
   uniform float u_dpr;
   uniform float u_hover;
+  uniform float u_scroll;
+  uniform float u_intensity;
   varying vec2 v_position;
 
   float hash(vec2 p) {
@@ -105,9 +108,11 @@ const fsSource = `
     vec3 accent = mix(lightAccent, darkAccent, u_isDark);
 
     float baseHeight = 50.0 * u_dpr;
-    float waveAmplitude = 25.0 * u_dpr;
+    float breath = 1.0 + 0.06 * sin(u_time * 0.2);
+    float waveAmplitude = 25.0 * u_dpr * breath * u_intensity;
     float xCoord = gl_FragCoord.x / u_dpr;
-    float boundary = baseHeight;
+    float scrollOffset = (u_scroll - 0.5) * 20.0 * u_dpr * u_intensity;
+    float boundary = baseHeight + scrollOffset;
     boundary += vnoise(vec2(xCoord * 0.008, u_time * 0.08)) * waveAmplitude;
     boundary += vnoise(vec2(xCoord * 0.02, u_time * 0.04 + 50.0)) * waveAmplitude * 0.4;
 
@@ -144,7 +149,7 @@ const fsSource = `
     vec3 bright2 = mix(bright, accent, isAccent2 * u_hover);
 
     // Transparent background - only render the metaballs
-    float alpha = max(blend1, blend2);
+    float alpha = max(blend1, blend2) * u_intensity;
     vec3 color = mix(dark1, bright2, blend2 / max(alpha, 0.001));
 
     gl_FragColor = vec4(color, alpha);
@@ -176,9 +181,14 @@ function getEffectiveDpr(): number {
   return dpr <= 1 ? 1.5 : dpr;
 }
 
-export default function WaveShader({ fadeTop = false, className = "" }: WaveShaderProps) {
+export default function WaveShader({
+  fadeTop = false,
+  className = "",
+  intensity = 1,
+}: WaveShaderProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationRef = useRef<number>(0);
+  const reduceMotionRef = useRef(false);
   const effectRef = useRef<{
     gl: WebGLRenderingContext;
     resolutionLoc: WebGLUniformLocation | null;
@@ -186,8 +196,12 @@ export default function WaveShader({ fadeTop = false, className = "" }: WaveShad
     isDarkLoc: WebGLUniformLocation | null;
     dprLoc: WebGLUniformLocation | null;
     hoverLoc: WebGLUniformLocation | null;
+    scrollLoc: WebGLUniformLocation | null;
+    intensityLoc: WebGLUniformLocation | null;
     hoverValue: number;
     hoverTarget: number;
+    scrollValue: number;
+    scrollTarget: number;
     needsResize: boolean;
   } | null>(null);
 
@@ -234,8 +248,11 @@ export default function WaveShader({ fadeTop = false, className = "" }: WaveShad
     const fadeTopLoc = gl.getUniformLocation(program, "u_fadeTop");
     const dprLoc = gl.getUniformLocation(program, "u_dpr");
     const hoverLoc = gl.getUniformLocation(program, "u_hover");
+    const scrollLoc = gl.getUniformLocation(program, "u_scroll");
+    const intensityLoc = gl.getUniformLocation(program, "u_intensity");
 
     gl.uniform1f(fadeTopLoc, fadeTop ? 1.0 : 0.0);
+    gl.uniform1f(intensityLoc, intensity);
 
     gl.enable(gl.BLEND);
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
@@ -247,11 +264,15 @@ export default function WaveShader({ fadeTop = false, className = "" }: WaveShad
       isDarkLoc,
       dprLoc,
       hoverLoc,
+      scrollLoc,
+      intensityLoc,
       hoverValue: 0,
       hoverTarget: 0,
+      scrollValue: 0.5,
+      scrollTarget: 0.5,
       needsResize: true,
     };
-  }, [fadeTop]);
+  }, [fadeTop, intensity]);
 
   useEffect(() => {
     effectRef.current = initWebGL();
@@ -259,20 +280,23 @@ export default function WaveShader({ fadeTop = false, className = "" }: WaveShad
     const canvas = canvasRef.current;
     if (!canvas || !effectRef.current) return;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        isVisibleRef.current = entries[0]?.isIntersecting ?? false;
-      },
-      { threshold: 0 },
-    );
-    observer.observe(canvas);
-
     const handleResize = () => {
       if (effectRef.current) {
         effectRef.current.needsResize = true;
       }
     };
     window.addEventListener("resize", handleResize);
+
+    const handleScroll = () => {
+      if (!effectRef.current || reduceMotionRef.current) {
+        return;
+      }
+      const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+      const progress = Math.min(1, window.scrollY / maxScroll);
+      effectRef.current.scrollTarget = progress;
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
 
     const handleMouseEnter = () => {
       if (effectRef.current) {
@@ -289,20 +313,19 @@ export default function WaveShader({ fadeTop = false, className = "" }: WaveShad
     container?.addEventListener("mouseenter", handleMouseEnter);
     container?.addEventListener("mouseleave", handleMouseLeave);
 
-    const render = (timestamp: number) => {
+    const renderFrame = (timestamp: number) => {
       if (!isVisibleRef.current || !effectRef.current) {
-        animationRef.current = requestAnimationFrame(render);
         return;
       }
 
-      if (timestamp - lastFrameTimeRef.current < FRAME_INTERVAL) {
-        animationRef.current = requestAnimationFrame(render);
+      if (!reduceMotionRef.current && timestamp - lastFrameTimeRef.current < FRAME_INTERVAL) {
         return;
       }
       lastFrameTimeRef.current = timestamp;
 
       const effect = effectRef.current;
-      const { gl, resolutionLoc, timeLoc, isDarkLoc, dprLoc, hoverLoc } = effect;
+      const { gl, resolutionLoc, timeLoc, isDarkLoc, dprLoc, hoverLoc, scrollLoc, intensityLoc } =
+        effect;
       const elapsed = (performance.now() - startTimeRef.current) / 1000.0;
       const isDark = getIsDark();
       const effectiveDpr = getEffectiveDpr();
@@ -330,28 +353,68 @@ export default function WaveShader({ fadeTop = false, className = "" }: WaveShad
       }
 
       gl.clear(gl.COLOR_BUFFER_BIT);
+      const scrollEase = 0.08;
+      effect.scrollValue += (effect.scrollTarget - effect.scrollValue) * scrollEase;
+
       gl.uniform1f(timeLoc, elapsed);
       gl.uniform1f(isDarkLoc, isDark);
       gl.uniform1f(dprLoc, effectiveDpr);
       gl.uniform1f(hoverLoc, effect.hoverValue);
+      gl.uniform1f(scrollLoc, effect.scrollValue);
+      gl.uniform1f(intensityLoc, intensity);
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    };
 
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const isVisible = entries[0]?.isIntersecting ?? false;
+        isVisibleRef.current = isVisible;
+        if (isVisible && reduceMotionRef.current) {
+          renderFrame(performance.now());
+        }
+      },
+      { threshold: 0 },
+    );
+    observer.observe(canvas);
+
+    const render = (timestamp: number) => {
+      renderFrame(timestamp);
+      if (!reduceMotionRef.current) {
+        animationRef.current = requestAnimationFrame(render);
+      }
+    };
+
+    const handleMotionPreference = () => {
+      const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+      reduceMotionRef.current = media.matches;
+      if (reduceMotionRef.current && effectRef.current) {
+        effectRef.current.hoverTarget = 0;
+        effectRef.current.scrollTarget = 0.5;
+        effectRef.current.scrollValue = 0.5;
+        cancelAnimationFrame(animationRef.current);
+        renderFrame(performance.now());
+        return;
+      }
       animationRef.current = requestAnimationFrame(render);
     };
 
-    animationRef.current = requestAnimationFrame(render);
+    const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    handleMotionPreference();
+    motionQuery.addEventListener("change", handleMotionPreference);
 
     return () => {
       cancelAnimationFrame(animationRef.current);
       observer.disconnect();
       window.removeEventListener("resize", handleResize);
+      window.removeEventListener("scroll", handleScroll);
       container?.removeEventListener("mouseenter", handleMouseEnter);
       container?.removeEventListener("mouseleave", handleMouseLeave);
+      motionQuery.removeEventListener("change", handleMotionPreference);
     };
-  }, [initWebGL]);
+  }, [initWebGL, intensity]);
 
   return (
-    <div className={`relative w-full overflow-hidden ${className}`}>
+    <div className={`wave-enter relative w-full overflow-hidden ${className}`}>
       <canvas ref={canvasRef} className="block h-full w-full" />
     </div>
   );

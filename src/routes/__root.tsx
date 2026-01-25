@@ -95,13 +95,13 @@ function RootComponent() {
         <HeadContent />
       </head>
       <body className="antialiased font-sans flex flex-col min-h-screen">
-        <WaveShader fadeTop={false} className="h-[150px] md:h-[150px]" />
+        <WaveShader fadeTop={false} className="h-[150px] md:h-[150px]" intensity={1} />
         <div className="mx-auto w-full max-w-screen-md flex-1 px-4 md:px-10">
           <Nav />
           <Outlet />
           <Footer />
         </div>
-        <WaveShader fadeTop={true} className="h-[300px] md:h-[450px]" />
+        <WaveShader fadeTop={true} className="h-[300px] md:h-[450px]" intensity={0.85} />
         <TanStackDevtools
           config={{
             position: "bottom-right",
