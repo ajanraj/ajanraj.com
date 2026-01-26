@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { motion, useReducedMotion, type Transition } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
+import GlassSurface from "./GlassSurface";
 import { Separator } from "./ui/separator";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/tooltip";
 
@@ -60,9 +61,22 @@ export default function Nav() {
       {hydrated && (
         <nav className="fixed bottom-3 left-0 z-10 flex w-full justify-center px-4">
           <TooltipProvider>
-            <div className="flex h-full max-w-xl justify-center rounded-2xl border border-white/30 bg-white/15 p-1 shadow-2xl shadow-black/10 backdrop-blur-md dark:border-white/15 dark:bg-white/10 dark:shadow-black/30">
-              <div className="relative" onMouseLeave={() => setHoveredTab(null)}>
-                <ul className="relative z-10 flex items-center gap-1">
+            <GlassSurface
+              borderRadius={50}
+              borderWidth={0.07}
+              brightness={50}
+              opacity={0.93}
+              blur={11}
+              displace={0.5}
+              backgroundOpacity={0.1}
+              saturation={1}
+              distortionScale={-180}
+              className="max-w-xl"
+              height="auto"
+              width="fit-content"
+            >
+              <div className="relative w-full" onMouseLeave={() => setHoveredTab(null)}>
+                <ul className="relative z-10 flex items-center gap-1 p-1">
                   {tabs.map((tab) => (
                     <li key={tab.name}>
                       <Tooltip delayDuration={500}>
@@ -182,7 +196,7 @@ export default function Nav() {
                   </li>
                 </ul>
               </div>
-            </div>
+            </GlassSurface>
           </TooltipProvider>
         </nav>
       )}
