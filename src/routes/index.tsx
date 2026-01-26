@@ -149,7 +149,10 @@ function HomePage() {
         <h2 className="text-xl">Experience</h2>
         <div className="mt-2.5 space-y-4">
           {RESUME.experience.map((experience, index) => (
-            <motion.div key={experience.company} {...itemMotion(0.2 + index * 0.04)}>
+            <motion.div
+              key={`${experience.company}-${experience.role}-${experience.start_date}`}
+              {...itemMotion(0.2 + index * 0.04)}
+            >
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-3.5">
                   <Link
