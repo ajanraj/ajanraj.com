@@ -1,10 +1,11 @@
 import { createFileRoute, notFound, Link } from "@tanstack/react-router";
-import { ExternalLink, Github } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import RESUME from "@/data/resume";
 import { enterMotion } from "@/components/motion/enter";
+import { GitHubIcon } from "@/components/GitHubIcon";
 
 export const Route = createFileRoute("/projects/$slug")({
   loader: ({ params }) => {
@@ -70,7 +71,7 @@ function ProjectPage() {
           {project.githubUrl && (
             <Button asChild variant="outline">
               <Link to={project.githubUrl} target="_blank">
-                <Github className="mr-2 h-4 w-4" />
+                <GitHubIcon className="mr-2 h-4 w-4" />
                 View Source
               </Link>
             </Button>

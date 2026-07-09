@@ -18,7 +18,11 @@ export const getRouter = () => {
     },
   });
 
-  setupRouterSsrQueryIntegration({ router, queryClient: rqContext.queryClient });
+  setupRouterSsrQueryIntegration({
+    router,
+    queryClient: rqContext.queryClient,
+    wrapQueryClient: false,
+  });
 
   return router;
 };

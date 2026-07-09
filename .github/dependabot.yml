@@ -1,0 +1,85 @@
+version: 2
+updates:
+  - package-ecosystem: bun
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 10
+    groups:
+      tanstack:
+        patterns:
+          - "@tanstack/*"
+        update-types:
+          - major
+          - minor
+          - patch
+      build:
+        patterns:
+          - "@content-collections/*"
+          - "@vitejs/*"
+          - nitro
+          - vite
+          - vitest
+          - wrangler
+        update-types:
+          - major
+          - minor
+          - patch
+      ui:
+        patterns:
+          - "@radix-ui/*"
+          - "@tailwindcss/*"
+          - class-variance-authority
+          - clsx
+          - framer-motion
+          - lucide-react
+          - tailwind-merge
+          - tailwindcss
+          - tw-animate-css
+        update-types:
+          - major
+          - minor
+          - patch
+      runtime:
+        patterns:
+          - "@aws-sdk/*"
+          - date-fns
+          - gray-matter
+          - hast-util-to-string
+          - html-react-parser
+          - react
+          - react-dom
+          - react-hotkeys-hook
+          - "rehype-*"
+          - "remark-*"
+          - unified
+          - "unist-*"
+          - zod
+        update-types:
+          - major
+          - minor
+          - patch
+      tooling:
+        patterns:
+          - "@types/*"
+          - oxfmt
+          - oxlint
+          - oxlint-tsgolint
+          - typescript
+        update-types:
+          - major
+          - minor
+          - patch
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      actions:
+        patterns:
+          - "*"
+        update-types:
+          - major
+          - minor
+          - patch
