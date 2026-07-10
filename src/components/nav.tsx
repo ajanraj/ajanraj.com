@@ -1,6 +1,6 @@
 "use client";
 
-import { Camera, FolderGit2, House, Mail, NotebookPen, Quote } from "lucide-react";
+import { Backpack, Camera, FolderGit2, House, Mail, NotebookPen, Quote } from "lucide-react";
 import { Link, useLocation } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { motion, useReducedMotion, type Transition } from "framer-motion";
@@ -22,6 +22,7 @@ const tabs: Tab[] = [
   { name: "quotes", icon: <Quote />, href: "/quotes" },
   { name: "projects", icon: <FolderGit2 />, href: "/projects" },
   { name: "photos", icon: <Camera />, href: "/photos" },
+  { name: "gear", icon: <Backpack />, href: "/gear" },
 ];
 
 export default function Nav() {
@@ -57,9 +58,9 @@ export default function Nav() {
 
   return (
     <>
-      <div className="fixed bottom-0 left-0 z-10 h-20 w-full bg-gradient-to-t from-background via-background/75 to-transparent" />
+      <div className="pointer-events-none fixed bottom-0 left-0 z-30 h-20 w-full bg-gradient-to-t from-background via-background/75 to-transparent" />
       {hydrated && (
-        <nav className="fixed bottom-3 left-0 z-10 flex w-full justify-center px-4">
+        <nav className="fixed bottom-3 left-0 z-40 flex w-full justify-center px-2 sm:px-4">
           <TooltipProvider>
             <GlassSurface
               borderRadius={50}
@@ -76,7 +77,7 @@ export default function Nav() {
               width="fit-content"
             >
               <div className="relative w-full" onMouseLeave={() => setHoveredTab(null)}>
-                <ul className="relative z-10 flex items-center gap-1 p-1">
+                <ul className="relative z-10 flex items-center gap-0.5 p-1 sm:gap-1">
                   {tabs.map((tab) => (
                     <li key={tab.name}>
                       <Tooltip delayDuration={500}>
@@ -88,7 +89,7 @@ export default function Nav() {
                           >
                             <Button
                               asChild
-                              className="h-9 w-9"
+                              className="h-8 w-8 sm:h-9 sm:w-9"
                               onMouseEnter={() => {
                                 setHoveredTab(tab.name);
                               }}
@@ -118,7 +119,7 @@ export default function Nav() {
                                     transition={hoverTransition}
                                   />
                                 )}
-                                <span className="relative z-10 flex h-9 w-9 items-center justify-center">
+                                <span className="relative z-10 flex h-8 w-8 items-center justify-center sm:h-9 sm:w-9">
                                   {tab.icon}
                                 </span>
                               </Link>
@@ -131,7 +132,10 @@ export default function Nav() {
                       </Tooltip>
                     </li>
                   ))}
-                  <Separator className="mx-1 min-h-5! opacity-30" orientation="vertical" />
+                  <Separator
+                    className="mx-0.5 min-h-5! opacity-30 sm:mx-1"
+                    orientation="vertical"
+                  />
                   <li>
                     <Tooltip delayDuration={500}>
                       <TooltipTrigger asChild>
@@ -142,7 +146,7 @@ export default function Nav() {
                         >
                           <Button
                             asChild
-                            className="h-9 w-9 text-muted-foreground opacity-75 hover:opacity-100"
+                            className="h-8 w-8 text-muted-foreground opacity-75 hover:opacity-100 sm:h-9 sm:w-9"
                             size="icon"
                             variant="ghost"
                           >
@@ -167,7 +171,7 @@ export default function Nav() {
                         >
                           <Button
                             asChild
-                            className="h-9 w-9 text-muted-foreground opacity-75 hover:opacity-100"
+                            className="h-8 w-8 text-muted-foreground opacity-75 hover:opacity-100 sm:h-9 sm:w-9"
                             size="icon"
                             variant="ghost"
                           >
@@ -177,7 +181,7 @@ export default function Nav() {
                               rel="noopener noreferrer"
                             >
                               <svg
-                                className="h-6 w-6"
+                                className="h-5 w-5 sm:h-6 sm:w-6"
                                 fill="currentColor"
                                 viewBox="0 0 24 24"
                                 xmlns="http://www.w3.org/2000/svg"

@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { Link, createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { AnimatePresence, motion, useReducedMotion, type Transition } from "framer-motion";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
@@ -18,20 +18,36 @@ type Photo = {
   size: number;
 };
 
+const PHOTO_DESCRIPTION =
+  "Travel and everyday photos shot on an iPhone 12 Pro Max, iPhone Air, or Fujifilm X100VI.";
+
+const CAMERA_KIT = [
+  {
+    name: "iPhone 12 Pro Max",
+    details: ["Wide 26mm f/1.6", "Ultra Wide 13mm f/2.4", "Telephoto 65mm f/2.2"],
+  },
+  {
+    name: "iPhone Air",
+    details: ["48MP Main 26mm f/1.6", "12MP 2× 52mm f/1.6"],
+  },
+  {
+    name: "Fujifilm X100VI",
+    details: ["40.2MP APS-C", "23mm f/2", "35mm equivalent"],
+  },
+] as const;
+
 export const Route = createFileRoute("/photos")({
   head: () => ({
     meta: [
       { title: "Photos | Ajan Raj" },
       {
         name: "description",
-        content:
-          "A collection of photos taken over the years. Capturing moments from travels and everyday life with an iPhone 12 Pro Max.",
+        content: PHOTO_DESCRIPTION,
       },
       { property: "og:title", content: "Photos | Ajan Raj" },
       {
         property: "og:description",
-        content:
-          "A collection of photos taken over the years. Capturing moments from travels and everyday life with an iPhone 12 Pro Max.",
+        content: PHOTO_DESCRIPTION,
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://ajanraj.com/photos" },
@@ -39,8 +55,7 @@ export const Route = createFileRoute("/photos")({
       { name: "twitter:title", content: "Photos | Ajan Raj" },
       {
         name: "twitter:description",
-        content:
-          "A collection of photos taken over the years. Capturing moments from travels and everyday life with an iPhone 12 Pro Max.",
+        content: PHOTO_DESCRIPTION,
       },
     ],
     links: [{ rel: "canonical", href: "https://ajanraj.com/photos" }],
@@ -193,17 +208,54 @@ function PhotosPage() {
           I enjoy capturing moments.
         </p>
       </motion.div>
-      <motion.p
-        className="mb-8 text-sm opacity-80"
+      <motion.section
+        aria-labelledby="photo-camera-kit"
+        className="mb-8 border-y border-dashed py-4"
         initial={reduceMotion ? false : { opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={
           reduceMotion ? { duration: 0 } : { duration: 0.28, ease: "easeOut", delay: 0.08 }
         }
       >
-        My photos are taken with an iPhone 12 Pro Max (Wide: 26mm f/1.6, Ultra Wide: 13mm f/2.4,
-        Telephoto: 65mm f/2.2).
-      </motion.p>
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <h2 className="page-heading text-xl leading-none sm:text-2xl" id="photo-camera-kit">
+              Three cameras, one archive.
+            </h2>
+            <p className="mt-1 max-w-lg text-xs leading-relaxed text-muted-foreground sm:text-sm">
+              Most newer photographs come from the iPhone Air and Fujifilm X100VI.
+            </p>
+          </div>
+          <Link
+            className="shrink-0 font-mono text-[9px] uppercase tracking-[0.14em] text-muted-foreground underline decoration-dashed underline-offset-4 transition-colors hover:text-foreground sm:text-[10px]"
+            to="/gear"
+          >
+            See the gear I use
+          </Link>
+        </div>
+
+        <ol className="mt-4 grid border-t border-dashed sm:grid-cols-3">
+          {CAMERA_KIT.map((camera, index) => (
+            <li
+              className="grid grid-cols-[1.5rem_1fr] gap-x-3 border-b border-dashed py-3 last:border-b-0 sm:block sm:border-r sm:border-b-0 sm:px-4 sm:first:pl-0 sm:last:border-r-0 sm:last:pr-0"
+              key={camera.name}
+            >
+              <span
+                aria-hidden="true"
+                className="pt-0.5 font-mono text-[9px] tracking-[0.18em] text-muted-foreground"
+              >
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <div>
+                <h3 className="page-heading text-base leading-tight sm:text-lg">{camera.name}</h3>
+                <p className="mt-1 font-mono text-[9px] leading-relaxed tracking-[0.03em] text-muted-foreground sm:text-[10px]">
+                  {camera.details.join(" · ")}
+                </p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </motion.section>
 
       {/* Photo Grid */}
       <motion.div

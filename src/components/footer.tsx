@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import { motion, useReducedMotion, type Transition } from "framer-motion";
 import { Button } from "./ui/button";
 
@@ -9,7 +10,15 @@ export default function Footer() {
   };
   return (
     <footer className="mt-8 flex items-center justify-between border-t border-dashed px-8 py-6 text-sm">
-      <p>Ajan Raj</p>
+      <div className="flex items-center gap-3">
+        <p>Ajan Raj</p>
+        <span aria-hidden="true" className="text-muted-foreground">
+          ·
+        </span>
+        <Link className="text-muted-foreground transition-colors hover:text-foreground" to="/gear">
+          Gear
+        </Link>
+      </div>
       <div className="flex items-center gap-1">
         <Button asChild size="sm" variant="ghost">
           <motion.a
