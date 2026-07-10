@@ -8,11 +8,12 @@
     "preview": "vite preview",
     "preview:worker": "bun run build && wrangler --cwd .output dev",
     "deploy": "bun run build && wrangler --cwd .output deploy",
+    "content:build": "content-collections build",
     "test": "vitest run",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "bun run content:build && tsc --noEmit",
     "format": "oxfmt --write",
     "lint": "oxlint --type-aware --type-check",
-    "check": "oxlint --type-aware --type-check && oxfmt --check"
+    "check": "bun run content:build && oxlint --type-aware --type-check && oxfmt --check"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1084.0",
@@ -58,6 +59,7 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@content-collections/cli": "0.1.9",
     "@tanstack/devtools-vite": "^0.8.1",
     "@types/node": "^26.1.1",
     "@types/react": "^19.2.17",
