@@ -199,6 +199,7 @@ const RESUME = {
       longDescription:
         "Nano Banana is an advanced image generation and editing tool built with Next.js 15 and React 19. It features a node graph editor powered by React Flow that allows users to create from text prompts, edit existing images, or combine multiple sources into new results. Using Google's Generative AI with the gemini-2.5-flash-image-preview model, it provides powerful image manipulation capabilities through an intuitive visual interface with drag-and-drop functionality and prompt presets.",
       imagePath: "/projects/nano-banana.png",
+      cropImage: true,
       liveUrl: "https://image-editor-navy.vercel.app/",
       githubUrl: "https://github.com/ajanraj/image-editor",
       stack: [

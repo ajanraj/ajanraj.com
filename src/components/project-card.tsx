@@ -13,6 +13,7 @@ type Project = {
   description: string;
   stack: string[];
   imagePath?: string;
+  cropImage?: boolean;
   githubUrl?: string;
   liveUrl?: string;
   inProgress?: boolean;
@@ -55,7 +56,7 @@ export default function ProjectCard({
         whileHover="hover"
       >
         <motion.div
-          className="h-48 w-full overflow-hidden rounded-lg"
+          className="aspect-[40/21] w-full overflow-hidden rounded-lg"
           transition={hoverTransition}
           variants={{
             rest: { filter: "brightness(0.65)" },
@@ -65,7 +66,10 @@ export default function ProjectCard({
           {project.imagePath ? (
             <motion.img
               alt={`${project.name} screenshot`}
-              className="h-full w-full object-cover object-top"
+              className={cn(
+                "h-full w-full",
+                project.cropImage ? "object-cover object-top" : "object-contain",
+              )}
               src={project.imagePath}
               transition={imageTransition}
               variants={{
@@ -74,9 +78,9 @@ export default function ProjectCard({
               }}
             />
           ) : (
-            <div className="flex h-48 w-full items-center justify-center bg-muted">
+            <div className="flex h-full w-full items-center justify-center bg-muted">
               <motion.div
-                transition={imageTransition}
+                transition={hoverTransition}
                 variants={{ rest: { scale: 1 }, hover: { scale: 1.05 } }}
               >
                 <ImageIcon className="h-10 w-10 text-muted-foreground" />
