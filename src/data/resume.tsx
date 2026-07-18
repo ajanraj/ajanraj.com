@@ -132,6 +132,28 @@ const RESUME = {
   ],
   projects: [
     {
+      slug: "batchwork",
+      name: "Batchwork",
+      description:
+        "Typed async Python API for running provider-native AI batch jobs across seven providers through one interface.",
+      longDescription:
+        "Batchwork is an open-source Python library for running provider-native batch jobs across OpenAI, Anthropic, Google Gemini, Groq, Mistral, Together AI, and xAI. It provides one typed async interface while handling provider-specific serialization, submission, polling, and result normalization. Batchwork supports text, embedding, and image workloads, with persistent polling, signed webhooks, structured content, tools, and remote media for production use.",
+      imagePath: "/projects/batchwork.png",
+      liveUrl: "https://batchwork.ajanraj.com/",
+      githubUrl: "https://github.com/ajanraj/batchwork-ai",
+      stack: ["Python 3.11+", "Pydantic", "HTTPX", "AsyncIO", "Upstash Redis"],
+      keyFeatures: [
+        "One typed API for seven provider-native batch services",
+        "Text, embedding, and image batch workloads",
+        "Normalized jobs, results, usage, and errors",
+        "Persistent polling with in-memory and Redis-compatible stores",
+        "Signed completion webhooks with retry deduplication",
+        "No provider SDK or JavaScript runtime dependencies",
+      ],
+      inProgress: true,
+      year: 2026,
+    },
+    {
       slug: "os-chat",
       name: "OS Chat",
       description:
