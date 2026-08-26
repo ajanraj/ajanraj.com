@@ -5,14 +5,10 @@ import { Markdown } from "@/components/Markdown";
 import { allPosts } from "content-collections";
 import { enterMotion } from "@/components/motion/enter";
 
-const postsMetadata = allPosts.reduce(
-  (acc, post) => {
-    if (!post.private && post.published !== false) {
-      acc[post.slug] = post;
-    }
-    return acc;
-  },
-  {} as Record<string, (typeof allPosts)[number]>,
+const postsBySlug = new Map(
+  allPosts
+    .filter((post) => !post.private && post.published !== false)
+    .map((post) => [post.slug, post] as const),
 );
 
 function formatDate(dateString: string) {
@@ -26,7 +22,7 @@ function formatDate(dateString: string) {
 
 export const Route = createFileRoute("/writing/$slug")({
   loader: ({ params }) => {
-    const post = postsMetadata[params.slug];
+    const post = postsBySlug.get(params.slug);
     if (!post) {
       throw notFound();
     }

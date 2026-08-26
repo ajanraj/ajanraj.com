@@ -4,22 +4,30 @@ import { endOfWeek, startOfDay, subDays } from "date-fns";
 import { ChevronRight } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { motion, useReducedMotion, type Transition } from "framer-motion";
+import { z } from "zod";
 import { Contributions } from "@/components/contributions";
 import ProjectCard from "@/components/project-card";
 import { Button } from "@/components/ui/button";
-import type { Activity } from "@/components/ui/kibo-ui/contribution-graph";
 import RESUME from "@/data/resume";
 import { enterMotion } from "@/components/motion/enter";
 
 const username = "ajanraj";
 
+const contributionsResponseSchema = z.object({
+  total: z.record(z.string(), z.number()),
+  contributions: z.array(
+    z.object({
+      date: z.string(),
+      count: z.number(),
+      level: z.number(),
+    }),
+  ),
+});
+
 const getContributions = createServerFn().handler(async () => {
   const url = new URL(`/v4/${username}`, "https://github-contributions-api.jogruber.de");
   const response = await fetch(url);
-  const data = (await response.json()) as {
-    total: { [year: string]: number };
-    contributions: Activity[];
-  };
+  const data = contributionsResponseSchema.parse(await response.json());
   const total = data.total[new Date().getFullYear()];
 
   // Calculate exactly 309 data points (44 weeks + 1 day)

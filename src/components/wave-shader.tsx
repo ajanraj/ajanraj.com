@@ -170,7 +170,6 @@ function createShader(gl: WebGLRenderingContext, type: number, source: string): 
 }
 
 function getIsDark(): number {
-  if (typeof document === "undefined") return 1.0;
   const html = document.documentElement;
   if (html.classList.contains("dark")) return 1.0;
   if (html.classList.contains("light")) return 0.0;

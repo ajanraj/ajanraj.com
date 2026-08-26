@@ -42,6 +42,12 @@ export interface GlassSurfaceProps {
   style?: React.CSSProperties;
 }
 
+type GlassSurfaceStyle = React.CSSProperties & {
+  "--glass-frost": number;
+  "--glass-saturation": number;
+  "--filter-id": string;
+};
+
 const GlassSurface: React.FC<GlassSurfaceProps> = ({
   children,
   width = 200,
@@ -163,10 +169,6 @@ const GlassSurface: React.FC<GlassSurfaceProps> = ({
   }, [updateDisplacementMap, width, height]);
 
   const supportsSVGFilters = useCallback(() => {
-    if (typeof window === "undefined" || typeof document === "undefined") {
-      return false;
-    }
-
     const isWebkit = /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent);
     const isFirefox = /Firefox/.test(navigator.userAgent);
 
@@ -184,15 +186,15 @@ const GlassSurface: React.FC<GlassSurfaceProps> = ({
     setSvgSupported(supportsSVGFilters());
   }, [supportsSVGFilters]);
 
-  const containerStyle: React.CSSProperties = {
+  const containerStyle: GlassSurfaceStyle = {
     ...style,
-    width: typeof width === "number" ? `${width}px` : width,
-    height: typeof height === "number" ? `${height}px` : height,
+    width,
+    height,
     borderRadius: `${borderRadius}px`,
     "--glass-frost": backgroundOpacity,
     "--glass-saturation": saturation,
     "--filter-id": `url(#${filterId})`,
-  } as React.CSSProperties;
+  };
 
   return (
     <div

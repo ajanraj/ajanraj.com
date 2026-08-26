@@ -110,10 +110,10 @@ const fillHoles = (activities: Activity[]): Activity[] => {
 
   const calendar = new Map<string, Activity>(activities.map((a) => [a.date, a]));
 
-  const firstActivity = sortedActivities[0] as Activity;
+  const firstActivity = sortedActivities[0];
   const lastActivity = sortedActivities.at(-1);
 
-  if (!lastActivity) {
+  if (!firstActivity || !lastActivity) {
     return [];
   }
 
@@ -123,8 +123,9 @@ const fillHoles = (activities: Activity[]): Activity[] => {
   }).map((day) => {
     const date = formatISO(day, { representation: "date" });
 
-    if (calendar.has(date)) {
-      return calendar.get(date) as Activity;
+    const activity = calendar.get(date);
+    if (activity) {
+      return activity;
     }
 
     return {
@@ -141,17 +142,20 @@ const groupByWeeks = (activities: Activity[], weekStart: WeekDay = 0): Week[] =>
   }
 
   const normalizedActivities = fillHoles(activities);
-  const firstActivity = normalizedActivities[0] as Activity;
+  const firstActivity = normalizedActivities[0];
+  if (!firstActivity) {
+    return [];
+  }
+
   const firstDate = parseISO(firstActivity.date);
   const firstCalendarDate =
     getDay(firstDate) === weekStart ? firstDate : subWeeks(nextDay(firstDate, weekStart), 1);
 
-  const paddedActivities = [
-    ...(Array.from({ length: differenceInCalendarDays(firstDate, firstCalendarDate) }).fill(
-      undefined,
-    ) as Activity[]),
-    ...normalizedActivities,
-  ];
+  const padding = Array.from(
+    { length: differenceInCalendarDays(firstDate, firstCalendarDate) },
+    () => undefined,
+  );
+  const paddedActivities: Week = [...padding, ...normalizedActivities];
 
   const numberOfWeeks = Math.ceil(paddedActivities.length / 7);
 
@@ -244,10 +248,7 @@ export const ContributionGraph = ({
 
   const year = data.length > 0 ? getYear(parseISO(data[0].date)) : new Date().getFullYear();
 
-  const totalCount =
-    typeof totalCountProp === "number"
-      ? totalCountProp
-      : data.reduce((sum, activity) => sum + activity.count, 0);
+  const totalCount = totalCountProp ?? data.reduce((sum, activity) => sum + activity.count, 0);
 
   const width = weeks.length * (blockSize + blockMargin) - blockMargin;
   const height = labelHeight + (blockSize + blockMargin) * 7 - blockMargin;
