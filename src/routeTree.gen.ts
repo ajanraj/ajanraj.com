@@ -9,24 +9,19 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as QuotesRouteImport } from './routes/quotes'
-import { Route as PhotosRouteImport } from './routes/photos'
-import { Route as GearRouteImport } from './routes/gear'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as WritingIndexRouteImport } from './routes/writing/index'
-import { Route as ProjectsIndexRouteImport } from './routes/projects/index'
-import { Route as WritingSlugRouteImport } from './routes/writing/$slug'
-import { Route as ProjectsSlugRouteImport } from './routes/projects/$slug'
+import { Route as GearRouteImport } from './routes/gear'
+import { Route as PhotosRouteImport } from './routes/photos'
+import { Route as QuotesRouteImport } from './routes/quotes'
 import { Route as ApiPhotosRouteImport } from './routes/api/photos'
+import { Route as ProjectsIndexRouteImport } from './routes/projects/index'
+import { Route as ProjectsSlugRouteImport } from './routes/projects/$slug'
+import { Route as WritingIndexRouteImport } from './routes/writing/index'
+import { Route as WritingSlugRouteImport } from './routes/writing/$slug'
 
-const QuotesRoute = QuotesRouteImport.update({
-  id: '/quotes',
-  path: '/quotes',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PhotosRoute = PhotosRouteImport.update({
-  id: '/photos',
-  path: '/photos',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GearRoute = GearRouteImport.update({
@@ -34,14 +29,19 @@ const GearRoute = GearRouteImport.update({
   path: '/gear',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const PhotosRoute = PhotosRouteImport.update({
+  id: '/photos',
+  path: '/photos',
   getParentRoute: () => rootRouteImport,
 } as any)
-const WritingIndexRoute = WritingIndexRouteImport.update({
-  id: '/writing/',
-  path: '/writing/',
+const QuotesRoute = QuotesRouteImport.update({
+  id: '/quotes',
+  path: '/quotes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPhotosRoute = ApiPhotosRouteImport.update({
+  id: '/api/photos',
+  path: '/api/photos',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProjectsIndexRoute = ProjectsIndexRouteImport.update({
@@ -49,19 +49,19 @@ const ProjectsIndexRoute = ProjectsIndexRouteImport.update({
   path: '/projects/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const WritingSlugRoute = WritingSlugRouteImport.update({
-  id: '/writing/$slug',
-  path: '/writing/$slug',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ProjectsSlugRoute = ProjectsSlugRouteImport.update({
   id: '/projects/$slug',
   path: '/projects/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiPhotosRoute = ApiPhotosRouteImport.update({
-  id: '/api/photos',
-  path: '/api/photos',
+const WritingIndexRoute = WritingIndexRouteImport.update({
+  id: '/writing/',
+  path: '/writing/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WritingSlugRoute = WritingSlugRouteImport.update({
+  id: '/writing/$slug',
+  path: '/writing/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -149,18 +149,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/quotes': {
-      id: '/quotes'
-      path: '/quotes'
-      fullPath: '/quotes'
-      preLoaderRoute: typeof QuotesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/photos': {
-      id: '/photos'
-      path: '/photos'
-      fullPath: '/photos'
-      preLoaderRoute: typeof PhotosRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/gear': {
@@ -170,18 +163,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GearRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/photos': {
+      id: '/photos'
+      path: '/photos'
+      fullPath: '/photos'
+      preLoaderRoute: typeof PhotosRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/writing/': {
-      id: '/writing/'
-      path: '/writing'
-      fullPath: '/writing/'
-      preLoaderRoute: typeof WritingIndexRouteImport
+    '/quotes': {
+      id: '/quotes'
+      path: '/quotes'
+      fullPath: '/quotes'
+      preLoaderRoute: typeof QuotesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/photos': {
+      id: '/api/photos'
+      path: '/api/photos'
+      fullPath: '/api/photos'
+      preLoaderRoute: typeof ApiPhotosRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/projects/': {
@@ -191,13 +191,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/writing/$slug': {
-      id: '/writing/$slug'
-      path: '/writing/$slug'
-      fullPath: '/writing/$slug'
-      preLoaderRoute: typeof WritingSlugRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/projects/$slug': {
       id: '/projects/$slug'
       path: '/projects/$slug'
@@ -205,11 +198,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectsSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/photos': {
-      id: '/api/photos'
-      path: '/api/photos'
-      fullPath: '/api/photos'
-      preLoaderRoute: typeof ApiPhotosRouteImport
+    '/writing/': {
+      id: '/writing/'
+      path: '/writing'
+      fullPath: '/writing/'
+      preLoaderRoute: typeof WritingIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/writing/$slug': {
+      id: '/writing/$slug'
+      path: '/writing/$slug'
+      fullPath: '/writing/$slug'
+      preLoaderRoute: typeof WritingSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
   }

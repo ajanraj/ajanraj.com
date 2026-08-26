@@ -23,6 +23,15 @@ bun run format    # Format code with oxfmt
 bun run test      # Run vitest tests
 ```
 
+### T3 browser preview
+
+```bash
+bunx vite dev --host 0.0.0.0 --port 3001
+tailscale ip -4
+```
+
+Open `http://<tailscale-ip>:3001/` in the T3 browser.
+
 ## Development Workflow Reminders
 
 - Run `bun run check` after all changes to ensure code quality
