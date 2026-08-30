@@ -12,7 +12,6 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as GearRouteImport } from './routes/gear'
 import { Route as PhotosRouteImport } from './routes/photos'
-import { Route as QuotesRouteImport } from './routes/quotes'
 import { Route as ApiPhotosRouteImport } from './routes/api/photos'
 import { Route as ProjectsIndexRouteImport } from './routes/projects/index'
 import { Route as ProjectsSlugRouteImport } from './routes/projects/$slug'
@@ -32,11 +31,6 @@ const GearRoute = GearRouteImport.update({
 const PhotosRoute = PhotosRouteImport.update({
   id: '/photos',
   path: '/photos',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const QuotesRoute = QuotesRouteImport.update({
-  id: '/quotes',
-  path: '/quotes',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiPhotosRoute = ApiPhotosRouteImport.update({
@@ -69,7 +63,6 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/gear': typeof GearRoute
   '/photos': typeof PhotosRoute
-  '/quotes': typeof QuotesRoute
   '/api/photos': typeof ApiPhotosRoute
   '/projects/$slug': typeof ProjectsSlugRoute
   '/writing/$slug': typeof WritingSlugRoute
@@ -80,7 +73,6 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/gear': typeof GearRoute
   '/photos': typeof PhotosRoute
-  '/quotes': typeof QuotesRoute
   '/api/photos': typeof ApiPhotosRoute
   '/projects/$slug': typeof ProjectsSlugRoute
   '/writing/$slug': typeof WritingSlugRoute
@@ -92,7 +84,6 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/gear': typeof GearRoute
   '/photos': typeof PhotosRoute
-  '/quotes': typeof QuotesRoute
   '/api/photos': typeof ApiPhotosRoute
   '/projects/$slug': typeof ProjectsSlugRoute
   '/writing/$slug': typeof WritingSlugRoute
@@ -105,7 +96,6 @@ export interface FileRouteTypes {
     | '/'
     | '/gear'
     | '/photos'
-    | '/quotes'
     | '/api/photos'
     | '/projects/$slug'
     | '/writing/$slug'
@@ -116,7 +106,6 @@ export interface FileRouteTypes {
     | '/'
     | '/gear'
     | '/photos'
-    | '/quotes'
     | '/api/photos'
     | '/projects/$slug'
     | '/writing/$slug'
@@ -127,7 +116,6 @@ export interface FileRouteTypes {
     | '/'
     | '/gear'
     | '/photos'
-    | '/quotes'
     | '/api/photos'
     | '/projects/$slug'
     | '/writing/$slug'
@@ -139,7 +127,6 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   GearRoute: typeof GearRoute
   PhotosRoute: typeof PhotosRoute
-  QuotesRoute: typeof QuotesRoute
   ApiPhotosRoute: typeof ApiPhotosRoute
   ProjectsSlugRoute: typeof ProjectsSlugRoute
   WritingSlugRoute: typeof WritingSlugRoute
@@ -168,13 +155,6 @@ declare module '@tanstack/react-router' {
       path: '/photos'
       fullPath: '/photos'
       preLoaderRoute: typeof PhotosRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/quotes': {
-      id: '/quotes'
-      path: '/quotes'
-      fullPath: '/quotes'
-      preLoaderRoute: typeof QuotesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/photos': {
@@ -219,7 +199,6 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   GearRoute: GearRoute,
   PhotosRoute: PhotosRoute,
-  QuotesRoute: QuotesRoute,
   ApiPhotosRoute: ApiPhotosRoute,
   ProjectsSlugRoute: ProjectsSlugRoute,
   WritingSlugRoute: WritingSlugRoute,

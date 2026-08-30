@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is ajanraj.com, a personal website built with TanStack Start (React) and deployed to Cloudflare. It features a blog, projects showcase, photos gallery, and quotes page with modern React patterns and server-side rendering.
+This is ajanraj.com, a personal website built with TanStack Start (React) and deployed to Cloudflare. It features a blog, projects showcase, and photos gallery with modern React patterns and server-side rendering.
 
 ## Development Commands
 
@@ -70,7 +70,6 @@ Content in Markdown format...
 - `/writing/` - Blog posts
 - `/projects/` - Projects showcase
 - `/photos/` - Photo gallery (uses Cloudflare R2)
-- `/quotes/` - Quotes collection
 
 ### Component Conventions
 

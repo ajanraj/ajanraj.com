@@ -1,6 +1,6 @@
 "use client";
 
-import { Backpack, Camera, FolderGit2, House, Mail, NotebookPen, Quote } from "lucide-react";
+import { Backpack, Camera, FolderGit2, House, Mail, NotebookPen } from "lucide-react";
 import { Link, useLocation } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { motion, useReducedMotion, type Transition } from "framer-motion";
@@ -19,7 +19,6 @@ type Tab = {
 const tabs: Tab[] = [
   { name: "home", icon: <House />, href: "/" },
   { name: "writing", icon: <NotebookPen />, href: "/writing" },
-  { name: "quotes", icon: <Quote />, href: "/quotes" },
   { name: "projects", icon: <FolderGit2 />, href: "/projects" },
   { name: "photos", icon: <Camera />, href: "/photos" },
   { name: "gear", icon: <Backpack />, href: "/gear" },
