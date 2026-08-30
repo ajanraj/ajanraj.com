@@ -5,6 +5,31 @@ const RESUME = {
     intro: "writes code, breaks things, occasionally fixes them.",
     about: "TODO: move bio here",
   },
+  publications: [
+    {
+      title: "From Information to Delegation: Mapping Human-AI Financial Decision Making",
+      authors: [
+        "Iman Munire Bilal",
+        "Yingcan Carol Wang",
+        "Ajan Raj",
+        "Filippo Giovagnini",
+        "Pranav Tewari",
+        "Yuwei Zhang",
+        "Mei-Chen Zoe Liou",
+        "Qamar Zaman",
+      ],
+      status: "Preprint",
+      venue: "arXiv",
+      year: 2026,
+      summary:
+        "A framework for measuring what people seek from AI and how much authority they delegate to it in financial decisions.",
+      abstract_url: "https://arxiv.org/abs/2608.02100",
+      pdf_url: "https://arxiv.org/pdf/2608.02100",
+      thumbnail_path: "/publications/from-information-to-delegation.webp",
+      thumbnail_width: 600,
+      thumbnail_height: 776,
+    },
+  ],
   experience: [
     {
       icon: (

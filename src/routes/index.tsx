@@ -12,6 +12,8 @@ import RESUME from "@/data/resume";
 import { enterMotion } from "@/components/motion/enter";
 
 const username = "ajanraj";
+const publicationLinkClassName =
+  "underline decoration-border underline-offset-4 transition-colors hover:decoration-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background";
 
 const contributionsResponseSchema = z.object({
   total: z.record(z.string(), z.number()),
@@ -152,14 +154,80 @@ function HomePage() {
         </div>
       </motion.div>
 
-      {/* Experience Section */}
+      {/* Publications Section */}
       <motion.div className="border-t border-dashed p-8" {...sectionMotion(0.16)}>
+        <h2 className="text-lg">Publications</h2>
+        <div className="mt-4 space-y-6">
+          {RESUME.publications.map((publication, index) => (
+            <motion.article
+              className="grid gap-4 sm:grid-cols-[10rem_minmax(0,1fr)] sm:gap-5"
+              key={publication.title}
+              {...itemMotion(0.2 + index * 0.04)}
+            >
+              <div className="w-40 overflow-hidden rounded-md border bg-muted sm:w-auto">
+                <img
+                  alt=""
+                  aria-hidden="true"
+                  className="h-auto w-full object-contain"
+                  height={publication.thumbnail_height}
+                  loading="lazy"
+                  src={publication.thumbnail_path}
+                  width={publication.thumbnail_width}
+                />
+              </div>
+              <div className="min-w-0">
+                <h3 className="text-base leading-snug">
+                  <a
+                    className={`font-medium ${publicationLinkClassName}`}
+                    href={publication.abstract_url}
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    {publication.title}
+                  </a>
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                  {publication.authors.map((author, authorIndex) => (
+                    <span key={author}>
+                      {author === RESUME.name ? (
+                        <strong className="font-medium text-foreground">{author}</strong>
+                      ) : (
+                        author
+                      )}
+                      {authorIndex < publication.authors.length - 1 ? ", " : ""}
+                    </span>
+                  ))}
+                </p>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                  {publication.summary}
+                </p>
+                <div className="mt-3 flex items-center gap-3 text-sm">
+                  <span className="text-muted-foreground">
+                    {publication.status} · {publication.venue} {publication.year}
+                  </span>
+                  <a
+                    className={publicationLinkClassName}
+                    href={publication.pdf_url}
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    PDF
+                  </a>
+                </div>
+              </div>
+            </motion.article>
+          ))}
+        </div>
+      </motion.div>
+
+      {/* Experience Section */}
+      <motion.div className="border-t border-dashed p-8" {...sectionMotion(0.2)}>
         <h2 className="text-xl">Experience</h2>
         <div className="mt-2.5 space-y-4">
           {RESUME.experience.map((experience, index) => (
             <motion.div
               key={`${experience.company}-${experience.role}-${experience.start_date}`}
-              {...itemMotion(0.2 + index * 0.04)}
+              {...itemMotion(0.24 + index * 0.04)}
             >
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-3.5">
@@ -202,11 +270,11 @@ function HomePage() {
       </motion.div>
 
       {/* Education Section */}
-      <motion.div className="border-t border-dashed p-8" {...sectionMotion(0.2)}>
+      <motion.div className="border-t border-dashed p-8" {...sectionMotion(0.24)}>
         <h2 className="text-xl">Education</h2>
         <div className="mt-2.5 space-y-4">
           {RESUME.education.map((education, index) => (
-            <motion.div key={education.institution} {...itemMotion(0.24 + index * 0.04)}>
+            <motion.div key={education.institution} {...itemMotion(0.28 + index * 0.04)}>
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-3.5">
                   <div>
@@ -229,14 +297,14 @@ function HomePage() {
       </motion.div>
 
       {/* Projects Section */}
-      <motion.div className="border-t border-dashed px-8 pt-8" {...sectionMotion(0.24)}>
+      <motion.div className="border-t border-dashed px-8 pt-8" {...sectionMotion(0.28)}>
         <h2 className="text-xl">Projects</h2>
         <p className="mt-2.5 mb-6 opacity-80">
           Here are some of my notable projects that showcase my skills and interests:
         </p>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           {RESUME.projects.slice(0, 4).map((project, index) => (
-            <motion.div key={project.name} {...itemMotion(0.28 + index * 0.04)}>
+            <motion.div key={project.name} {...itemMotion(0.32 + index * 0.04)}>
               <ProjectCard project={project} />
             </motion.div>
           ))}
