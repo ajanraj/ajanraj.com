@@ -13,10 +13,12 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as GearRouteImport } from './routes/gear'
 import { Route as PhotosRouteImport } from './routes/photos'
 import { Route as ApiPhotosRouteImport } from './routes/api/photos'
+import { Route as PhotosOtherRouteImport } from './routes/photos_.other'
 import { Route as ProjectsIndexRouteImport } from './routes/projects/index'
 import { Route as ProjectsSlugRouteImport } from './routes/projects/$slug'
 import { Route as WritingIndexRouteImport } from './routes/writing/index'
 import { Route as WritingSlugRouteImport } from './routes/writing/$slug'
+import { Route as PhotosTripsTripIdRouteImport } from './routes/photos_.trips.$tripId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -36,6 +38,11 @@ const PhotosRoute = PhotosRouteImport.update({
 const ApiPhotosRoute = ApiPhotosRouteImport.update({
   id: '/api/photos',
   path: '/api/photos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PhotosOtherRoute = PhotosOtherRouteImport.update({
+  id: '/photos_/other',
+  path: '/photos/other',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProjectsIndexRoute = ProjectsIndexRouteImport.update({
@@ -58,26 +65,35 @@ const WritingSlugRoute = WritingSlugRouteImport.update({
   path: '/writing/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PhotosTripsTripIdRoute = PhotosTripsTripIdRouteImport.update({
+  id: '/photos_/trips/$tripId',
+  path: '/photos/trips/$tripId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/gear': typeof GearRoute
   '/photos': typeof PhotosRoute
   '/api/photos': typeof ApiPhotosRoute
+  '/photos/other': typeof PhotosOtherRoute
   '/projects/$slug': typeof ProjectsSlugRoute
   '/writing/$slug': typeof WritingSlugRoute
   '/projects/': typeof ProjectsIndexRoute
   '/writing/': typeof WritingIndexRoute
+  '/photos/trips/$tripId': typeof PhotosTripsTripIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/gear': typeof GearRoute
   '/photos': typeof PhotosRoute
   '/api/photos': typeof ApiPhotosRoute
+  '/photos/other': typeof PhotosOtherRoute
   '/projects/$slug': typeof ProjectsSlugRoute
   '/writing/$slug': typeof WritingSlugRoute
   '/projects': typeof ProjectsIndexRoute
   '/writing': typeof WritingIndexRoute
+  '/photos/trips/$tripId': typeof PhotosTripsTripIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -85,10 +101,12 @@ export interface FileRoutesById {
   '/gear': typeof GearRoute
   '/photos': typeof PhotosRoute
   '/api/photos': typeof ApiPhotosRoute
+  '/photos_/other': typeof PhotosOtherRoute
   '/projects/$slug': typeof ProjectsSlugRoute
   '/writing/$slug': typeof WritingSlugRoute
   '/projects/': typeof ProjectsIndexRoute
   '/writing/': typeof WritingIndexRoute
+  '/photos_/trips/$tripId': typeof PhotosTripsTripIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -97,30 +115,36 @@ export interface FileRouteTypes {
     | '/gear'
     | '/photos'
     | '/api/photos'
+    | '/photos/other'
     | '/projects/$slug'
     | '/writing/$slug'
     | '/projects/'
     | '/writing/'
+    | '/photos/trips/$tripId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/gear'
     | '/photos'
     | '/api/photos'
+    | '/photos/other'
     | '/projects/$slug'
     | '/writing/$slug'
     | '/projects'
     | '/writing'
+    | '/photos/trips/$tripId'
   id:
     | '__root__'
     | '/'
     | '/gear'
     | '/photos'
     | '/api/photos'
+    | '/photos_/other'
     | '/projects/$slug'
     | '/writing/$slug'
     | '/projects/'
     | '/writing/'
+    | '/photos_/trips/$tripId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -128,10 +152,12 @@ export interface RootRouteChildren {
   GearRoute: typeof GearRoute
   PhotosRoute: typeof PhotosRoute
   ApiPhotosRoute: typeof ApiPhotosRoute
+  PhotosOtherRoute: typeof PhotosOtherRoute
   ProjectsSlugRoute: typeof ProjectsSlugRoute
   WritingSlugRoute: typeof WritingSlugRoute
   ProjectsIndexRoute: typeof ProjectsIndexRoute
   WritingIndexRoute: typeof WritingIndexRoute
+  PhotosTripsTripIdRoute: typeof PhotosTripsTripIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -164,6 +190,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPhotosRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/photos_/other': {
+      id: '/photos_/other'
+      path: '/photos/other'
+      fullPath: '/photos/other'
+      preLoaderRoute: typeof PhotosOtherRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/projects/': {
       id: '/projects/'
       path: '/projects'
@@ -192,6 +225,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WritingSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/photos_/trips/$tripId': {
+      id: '/photos_/trips/$tripId'
+      path: '/photos/trips/$tripId'
+      fullPath: '/photos/trips/$tripId'
+      preLoaderRoute: typeof PhotosTripsTripIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -200,10 +240,12 @@ const rootRouteChildren: RootRouteChildren = {
   GearRoute: GearRoute,
   PhotosRoute: PhotosRoute,
   ApiPhotosRoute: ApiPhotosRoute,
+  PhotosOtherRoute: PhotosOtherRoute,
   ProjectsSlugRoute: ProjectsSlugRoute,
   WritingSlugRoute: WritingSlugRoute,
   ProjectsIndexRoute: ProjectsIndexRoute,
   WritingIndexRoute: WritingIndexRoute,
+  PhotosTripsTripIdRoute: PhotosTripsTripIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

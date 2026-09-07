@@ -11,6 +11,9 @@ export const getRouter = () => {
 
   const router = createRouter({
     routeTree,
+    scrollRestoration: ({ location }) => location.pathname === "/photos",
+    getScrollRestorationKey: (location) =>
+      location.pathname === "/photos" ? "/photos" : (location.state.__TSR_key ?? location.href),
     context: { ...rqContext },
     defaultPreload: "intent",
     Wrap: (props: { children: React.ReactNode }) => {
