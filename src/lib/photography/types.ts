@@ -7,6 +7,8 @@ export interface Photo {
   original: string;
   lastModified?: string;
   size: number;
+  width?: number;
+  height?: number;
   trip?: string;
   order?: number;
   alt: string;

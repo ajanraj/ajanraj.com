@@ -86,7 +86,7 @@ function PhotoCollection({
       {trip?.introduction && (
         <p className="mt-4 whitespace-pre-line text-muted-foreground">{trip.introduction}</p>
       )}
-      <div className="mt-8">
+      <div className="photography-wide mt-10">
         {tripId && !trip ? (
           <p>This trip does not exist. Choose a trip from All photographs.</p>
         ) : index && data.trips.length > 0 ? (
@@ -107,7 +107,7 @@ function TripIndex({ data }: { data: PhotoInventory }) {
   const byName = new Map(data.photos.map((photo) => [photo.name, photo]));
   return (
     <>
-      <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2">
         {data.trips.flatMap((item) => {
           if (item.count === 0) return [];
           const cover = item.cover ? byName.get(item.cover) : undefined;
@@ -116,9 +116,9 @@ function TripIndex({ data }: { data: PhotoInventory }) {
               key={item.id}
               to="/photos/trips/$tripId"
               params={{ tripId: item.id }}
-              className="block rounded-xl focus-visible:outline-2 focus-visible:outline-offset-4"
+              className="trip-cover block rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4"
             >
-              {cover && <PhotoImage photo={cover} key={cover.name} />}
+              {cover && <PhotoImage photo={cover} key={cover.name} cover />}
               <h2 className="page-heading mt-3 text-2xl">{item.name}</h2>
               <p className="mt-1 text-sm text-muted-foreground">
                 {item.startDate} – {item.endDate}

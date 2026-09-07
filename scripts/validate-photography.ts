@@ -12,3 +12,12 @@ if (!result.success) {
     `Photography metadata valid: ${result.data.trips.length} trips, ${Object.keys(result.data.photos).length} photo entries.`,
   );
 }
+
+const { dimensionsSchema } = await import("../src/lib/photography/dimensions");
+const { default: dimensions } = await import("../src/data/photo-dimensions.json");
+const catalog = dimensionsSchema.safeParse(dimensions);
+if (!catalog.success) {
+  for (const issue of catalog.error.issues)
+    console.error(`Dimensions ${issue.path.join(".")}: ${issue.message}`);
+  process.exitCode = 1;
+}
