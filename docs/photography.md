@@ -54,4 +54,33 @@ Run `bun run check`, `bun run test`, and `bun run build` before releasing. Commi
 
 The photo API lists all S3 or R2 pages before assembling the response. A storage failure returns an error, rather than a partial collection. The gallery offers retry. A failed individual image displays a separate message and leaves navigation usable.
 
-Image dimension cataloging, uncropped responsive rows, touch gestures and the remaining viewer accessibility work belong to issue #29.
+## Refresh image dimensions
+
+The generated `src/data/photo-dimensions.json` is separate from handwritten `photography.json`. To refresh it, use a complete local mirror of the original images, preserving exact object names and folder paths:
+
+```bash
+bun run photos:catalog /path/to/local/photos
+bun run photos:validate
+```
+
+The command only reads local image files. It does not authenticate, download objects, upload, or deploy. Obtaining or refreshing a mirror from live storage requires explicit production-access authorization. Routine tests generate local fixtures and never use the live bucket.
+
+The catalog records displayed width and height after EXIF orientation, original byte size, and a SHA-256 content hash. Unchanged files retain their entries. Changed bytes trigger a fresh measurement, even when the filename and byte size stay the same. Sharp is a development dependency used only by the command and tests; it is absent from the deployed request path.
+
+Unreadable images and references missing from the mirror produce named diagnostics and a nonzero exit status. The command saves successful measurements and retains old entries for failed or absent images. Check that the mirror is complete, restore unreadable files, or deliberately correct stale references, then rerun. Neither editorial metadata nor original images are written. Invalid existing catalog entries stop the command before any write. The catalog file is replaced atomically after processing.
+
+For an isolated fixture or alternate catalog, use `--output /path/to/dimensions.json --metadata /path/to/photography.json`. Output must be outside the mirror and must not target the editorial file. Review and commit the generated catalog with normal site changes.
+
+Photos without dimensions stay visible in reserved uncropped frames. Invalid entries or a changed original byte size also fall back to a frame, with an API warning. Runtime size checks cannot detect a same-size replacement; refresh the local mirror and catalog after replacing originals. Refreshing dimensions is optional for publishing new uploads.
+
+## Gallery and viewer
+
+Photography uses up to 1120px independently of the reading column. Trip covers may crop, while gallery rows contain full images in curated order with 16px gutters. Below 600px, each photo occupies its own full-width row. Ordinary cataloged images use their natural proportions; extreme proportions retain the entire image within bounded frames. The final desktop row stays left aligned at no more than 260px high.
+
+Open a photo with Enter or a tap. Arrow keys, previous/next buttons, and horizontal swipes loop within that collection. A one-photo collection omits navigation buttons. Escape or Close returns focus and scroll position to the originating photo. The dialog keeps focus inside, displays collection/position/camera details outside the image, and respects reduced motion.
+
+The visual treatment draws on [Gallery Wall](https://opensourceui.in/components/gallery-wall), [Gallery Grid](https://opensourceui.in/components/gallery-grid), [Photo Contact Sheet](https://opensourceui.in/components/photo-contact-sheet), and [Photo Album](https://opensourceui.in/components/photo-album). No component source was copied.
+
+## Browser verification
+
+Run `bunx playwright install chromium` once, then `bun run test:e2e`. The tests start an isolated server on port 3029 with storage credentials cleared, intercept the existing photo API, and supply local image fixtures. They cover keyboard and touch journeys, focus restoration, cameras, failures, empty and single-photo trips, reduced motion, and layouts at 375px, 768px, and 1440px. Screenshots are written to ignored `test-results/` for visual inspection. They do not use a daily preview server or live images.

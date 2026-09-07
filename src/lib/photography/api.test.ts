@@ -253,3 +253,42 @@ it("uses deterministic date and name fallbacks and preserves cameras when reassi
   expect(unassigned.unorganized).toEqual(["z.jpg", "a.jpg", "b.jpg", "ordered.jpg"]);
   expect(unassigned.photos[3].camera).toBe("iPhone Air");
 });
+
+it("keeps photos usable when dimensions are absent, invalid, or stale", async () => {
+  const response = await getPhotoResponse(
+    {
+      kind: "r2",
+      bucket: {
+        list: async () => ({
+          truncated: false,
+          objects: ["valid.jpg", "invalid.jpg", "stale.jpg", "new.jpg"].map((key) => ({
+            key,
+            size: 100,
+          })),
+        }),
+      },
+    },
+    { trips: [], photos: {} },
+    {
+      "valid.jpg": { width: 400, height: 300, size: 100, sha256: "a".repeat(64) },
+      "invalid.jpg": { width: -1, height: 300, size: 100, sha256: "a".repeat(64) },
+      "stale.jpg": { width: 400, height: 300, size: 50, sha256: "a".repeat(64) },
+    },
+  );
+  const body = await response.json();
+  expect(response.status).toBe(200);
+  expect(body.photos).toHaveLength(4);
+  expect(body.photos.find((photo: { name: string }) => photo.name === "valid.jpg")).toMatchObject({
+    width: 400,
+    height: 300,
+  });
+  for (const name of ["invalid.jpg", "stale.jpg", "new.jpg"]) {
+    expect(body.photos.find((photo: { name: string }) => photo.name === name)).not.toHaveProperty(
+      "width",
+    );
+  }
+  expect(body.warnings).toEqual([
+    expect.stringContaining("invalid.jpg"),
+    expect.stringContaining("stale.jpg"),
+  ]);
+});

@@ -1,3 +1,4 @@
+import { dimensionsSchema, type DimensionCatalog } from "./dimensions";
 import { ZodError } from "zod";
 import { ListObjectsV2Command, type ListObjectsV2CommandOutput } from "@aws-sdk/client-s3";
 
@@ -59,10 +60,12 @@ async function listInventory(storage: PhotoStorage): Promise<InventoryObject[]> 
 export async function getPhotoResponse(
   storage: PhotoStorage,
   metadata: PhotographyMetadata,
+  dimensions: DimensionCatalog = {},
 ): Promise<Response> {
   try {
     const editorial = photographySchema.parse(metadata);
     const inventory = await listInventory(storage);
+    const warnings: string[] = [];
     const photos: Photo[] = inventory
       .filter((object) => /\.(jpg|jpeg|png|gif|webp)$/i.test(object.key))
       .sort(
@@ -72,7 +75,16 @@ export async function getPhotoResponse(
       )
       .map((object) => {
         const path = object.key.split("/").map(encodeURIComponent).join("/");
+        const parsed = dimensionsSchema.safeParse({ [object.key]: dimensions[object.key] });
+        const measured = parsed.success ? parsed.data[object.key] : undefined;
+        const current = measured?.size === object.size ? measured : undefined;
+        if (dimensions[object.key] && !current)
+          warnings.push(
+            `Invalid or stale dimensions for ${object.key}. Refresh the local dimension catalog; the photo remains visible.`,
+          );
         return {
+          width: current?.width,
+          height: current?.height,
           name: object.key,
           original: `https://photos.ajanraj.com/${path}`,
           thumbnail: `https://photos.ajanraj.com/cdn-cgi/image/width=800,quality=90,format=auto/${path}`,
@@ -107,13 +119,16 @@ export async function getPhotoResponse(
       photos,
       trips,
       unorganized: photos.flatMap((photo) => (photo.trip ? [] : [photo.name])),
-      warnings: Object.keys(editorial.photos).flatMap((name) =>
-        names.has(name)
-          ? []
-          : [
-              `Missing storage object ${name}. Restore the object or update its metadata; metadata has been retained.`,
-            ],
-      ),
+      warnings: [
+        ...warnings,
+        ...Object.keys(editorial.photos).flatMap((name) =>
+          names.has(name)
+            ? []
+            : [
+                `Missing storage object ${name}. Restore the object or update its metadata; metadata has been retained.`,
+              ],
+        ),
+      ],
     };
     return Response.json(result);
   } catch (error) {

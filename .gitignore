@@ -12,3 +12,6 @@ count.txt
 .vinxi
 .content-collections
 todos.json
+
+/test-results/
+/playwright-report/

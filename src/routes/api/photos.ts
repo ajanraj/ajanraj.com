@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { getPhotoResponse, type R2Bucket } from "@/lib/photography/api";
+import dimensions from "@/data/photo-dimensions.json";
 import metadata from "@/data/photography.json";
 
 export const Route = createFileRoute("/api/photos")({
@@ -10,7 +11,7 @@ export const Route = createFileRoute("/api/photos")({
         // @ts-expect-error - Cloudflare binding available at runtime
         const env = request.cf?.env || globalThis.__env__ || {};
         const bucket: R2Bucket | undefined = env.PHOTOS_BUCKET;
-        if (bucket) return getPhotoResponse({ kind: "r2", bucket }, metadata);
+        if (bucket) return getPhotoResponse({ kind: "r2", bucket }, metadata, dimensions);
 
         const accountId = process.env.CLOUDFLARE_ACCOUNT_ID;
         const accessKeyId = process.env.CLOUDFLARE_R2_ACCESS_KEY_ID;
@@ -27,7 +28,7 @@ export const Route = createFileRoute("/api/photos")({
           endpoint: `https://${accountId}.r2.cloudflarestorage.com`,
           credentials: { accessKeyId, secretAccessKey },
         });
-        return getPhotoResponse({ kind: "s3", client }, metadata);
+        return getPhotoResponse({ kind: "s3", client }, metadata, dimensions);
       },
     },
   },
