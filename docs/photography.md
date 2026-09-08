@@ -73,6 +73,8 @@ For an isolated fixture or alternate catalog, use `--output /path/to/dimensions.
 
 Photos without dimensions stay visible in reserved uncropped frames. Invalid entries or a changed original byte size also fall back to a frame, with an API warning. Runtime size checks cannot detect a same-size replacement; refresh the local mirror and catalog after replacing originals. Refreshing dimensions is optional for publishing new uploads.
 
+The initial catalog was populated on 2026-09-08 from all 86 images in the live bucket, using Wrangler authentication for read-only listing and downloads across five inventory pages. Every downloaded byte size matched the inventory. The local originals contain 84 portraits, one landscape, and one square image; no editorial metadata or bucket objects were changed.
+
 ## Gallery and viewer
 
 Photography uses up to 1120px independently of the reading column. Trip covers may crop, while gallery rows contain full images in curated order with 16px gutters. Below 600px, each photo occupies its own full-width row. Ordinary cataloged images use their natural proportions; extreme proportions retain the entire image within bounded frames. The final desktop row stays left aligned at no more than 260px high.
