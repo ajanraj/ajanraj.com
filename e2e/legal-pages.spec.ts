@@ -37,12 +37,15 @@ test("privacy page shows the Limited Use sentence as visible text", async ({ pag
   ).toBeVisible();
 });
 
-test("public site never reveals the hidden legal pages", async ({ page, request }) => {
+// Raw SSR HTML is what crawlers read; client bundles are checked in the build output.
+test("public site never reveals the hidden legal pages", async ({ request }) => {
   for (const path of ["/", "/writing", "/projects", "/photos", "/gear"]) {
-    const response = await page.goto(path);
-    expect(response?.headers()["x-robots-tag"]).toBeUndefined();
-    expect(await page.content()).not.toContain(LEGAL_SLUG);
-    await expect(page.locator('a[href*="/p/"]')).toHaveCount(0);
+    const response = await request.get(path);
+    expect(response.status()).toBe(200);
+    expect(response.headers()["x-robots-tag"]).toBeUndefined();
+    const html = await response.text();
+    expect(html).not.toContain(LEGAL_SLUG);
+    expect(html).not.toContain('href="/p/');
   }
 
   const robots = await request.get("/robots.txt");
