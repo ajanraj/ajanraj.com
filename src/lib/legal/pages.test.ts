@@ -46,7 +46,6 @@ describe("hidden legal pages", () => {
   it("discloses the required privacy facts", () => {
     const text = privacyPage.body;
     for (const fact of [
-      "hermes-jarvis-513423",
       "Gmail",
       "Google Calendar",
       "Google Contacts",
@@ -61,6 +60,15 @@ describe("hidden legal pages", () => {
       "https://myaccount.google.com/permissions",
     ]) {
       expect(text).toContain(fact);
+    }
+  });
+
+  it("omits internal names and infrastructure details from both pages", async () => {
+    expect(privacyPage.title).toBe("Privacy policy");
+    expect(termsPage.title).toBe("Terms");
+    for (const page of [privacyPage, termsPage]) {
+      const html = await legalResponse(page).text();
+      expect(html).not.toMatch(/hermes|atlas|jarvis|513423|Google Cloud|agent|Ajan Raj/i);
     }
   });
 
