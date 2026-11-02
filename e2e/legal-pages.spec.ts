@@ -2,8 +2,8 @@ import { expect, test } from "@playwright/test";
 import { LEGAL_SLUG } from "../src/lib/legal/pages";
 
 const pages = [
-  { path: `/p/${LEGAL_SLUG}/privacy`, title: "Hermes Atlas Privacy Policy" },
-  { path: `/p/${LEGAL_SLUG}/terms`, title: "Hermes Atlas Terms of Service" },
+  { path: `/p/${LEGAL_SLUG}/privacy`, title: "Privacy policy" },
+  { path: `/p/${LEGAL_SLUG}/terms`, title: "Terms" },
 ];
 
 for (const legal of pages) {
