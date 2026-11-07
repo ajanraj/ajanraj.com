@@ -64,7 +64,7 @@
   "devDependencies": {
     "@content-collections/cli": "0.1.9",
     "@oxlint/plugins": "1.79.0",
-    "@playwright/test": "^1.62.1",
+    "@playwright/test": "^1.63.0",
     "@tanstack/devtools-vite": "^0.8.4",
     "@types/node": "^26.2.0",
     "@types/react": "^19.2.18",
