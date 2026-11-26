@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it } from "vite-plus/test";
 import { LEGAL_SLUG, legalResponse, privacyPage, termsPage } from "./pages";
 
 const LIMITED_USE =

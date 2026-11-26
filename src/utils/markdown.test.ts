@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it } from "vite-plus/test";
 import { parseMarkdownMarkup } from "../components/Markdown";
 import { renderMarkdown } from "./markdown";
 
@@ -28,7 +28,8 @@ describe("renderMarkdown", () => {
 
 <section data-kind="raw"><strong>Raw</strong></section>`);
 
-    expect(result.markup).toContain(
+    // Whitespace between table tags varies across hast versions and is dropped when rendered.
+    expect(result.markup.replace(/>\s+</g, "><")).toContain(
       "<table><thead><tr><th>Name</th><th>Value</th></tr></thead><tbody><tr><td>A</td><td>B</td></tr></tbody></table>",
     );
     expect(result.markup).toContain('<section data-kind="raw"><strong>Raw</strong></section>');
