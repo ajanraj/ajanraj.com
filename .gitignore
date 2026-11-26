@@ -16,3 +16,6 @@ todos.json
 /test-results/
 /playwright-report/
 .vitest/
+
+# Local planning and agent docs
+/docs/
