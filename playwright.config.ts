@@ -5,7 +5,7 @@ export default defineConfig({
   fullyParallel: true,
   use: { baseURL: "http://127.0.0.1:3029", browserName: "chromium" },
   webServer: {
-    command: "bunx vite dev --host 127.0.0.1 --port 3029 --strictPort",
+    command: "bunx vp dev --host 127.0.0.1 --port 3029 --strictPort",
     url: "http://127.0.0.1:3029",
     reuseExistingServer: false,
     env: {

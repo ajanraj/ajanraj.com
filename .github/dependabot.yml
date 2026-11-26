@@ -19,7 +19,7 @@ updates:
           - "@vitejs/*"
           - nitro
           - vite
-          - vitest
+          - vite-plus
           - wrangler
         update-types:
           - major
@@ -62,9 +62,6 @@ updates:
       tooling:
         patterns:
           - "@types/*"
-          - oxfmt
-          - oxlint
-          - oxlint-tsgolint
           - typescript
         update-types:
           - major

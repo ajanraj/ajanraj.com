@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it } from "vite-plus/test";
 import { getPhotoResponse } from "./api";
 
 describe("photo API", () => {
@@ -7,8 +7,8 @@ describe("photo API", () => {
       {
         kind: "r2",
         bucket: {
-          list: async ({ cursor } = {}) =>
-            cursor
+          list: async (options) =>
+            options?.cursor
               ? {
                   objects: [{ key: "folder/a #?.jpg", uploaded: new Date("2026-09-02"), size: 12 }],
                   truncated: false,
@@ -106,10 +106,10 @@ it("returns equivalent metadata through paginated S3 and R2 inventories", async 
     {
       kind: "r2",
       bucket: {
-        list: async ({ cursor } = {}) => ({
-          objects: [cursor ? last : first],
-          truncated: !cursor,
-          cursor: cursor ? undefined : "next",
+        list: async (options) => ({
+          objects: [options?.cursor ? last : first],
+          truncated: !options?.cursor,
+          cursor: options?.cursor ? undefined : "next",
         }),
       },
     },
